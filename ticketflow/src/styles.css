@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .tf-input {
+        @apply tf-px-3 tf-py-2 tf-text-sm tf-border tf-border-gray-300 tf-rounded-lg focus:tf-ring-2 focus:tf-ring-primary-500 focus:tf-border-primary-500 tf-outline-none;
+    }
+}

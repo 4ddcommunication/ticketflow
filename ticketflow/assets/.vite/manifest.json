@@ -1,0 +1,31 @@
+{
+  "_styles-!~{001}~.js": {
+    "file": "styles/styles.css",
+    "src": "_styles-!~{001}~.js"
+  },
+  "_styles-B0Wx6hWc.js": {
+    "file": "styles/chunks/styles-B0Wx6hWc.js",
+    "name": "styles",
+    "css": [
+      "styles/styles.css"
+    ]
+  },
+  "src/admin/main.tsx": {
+    "file": "admin/admin.js",
+    "name": "admin",
+    "src": "src/admin/main.tsx",
+    "isEntry": true,
+    "imports": [
+      "_styles-B0Wx6hWc.js"
+    ]
+  },
+  "src/portal/main.tsx": {
+    "file": "portal/portal.js",
+    "name": "portal",
+    "src": "src/portal/main.tsx",
+    "isEntry": true,
+    "imports": [
+      "_styles-B0Wx6hWc.js"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "name": "ticketflow/ticketflow",
+    "description": "Agency ticket system for WordPress",
+    "type": "wordpress-plugin",
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ticketflow\\": "includes/"
+        }
+    }
+}
