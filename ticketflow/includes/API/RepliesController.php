@@ -16,7 +16,9 @@ class RepliesController extends BaseController
 {
     public function __construct(
         private ActivityService $activity
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     public function register_routes(): void
     {

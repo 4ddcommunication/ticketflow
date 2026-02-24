@@ -13,7 +13,9 @@ class AuthController extends BaseController
 {
     public function __construct(
         private AuthService $service
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     public function register_routes(): void
     {

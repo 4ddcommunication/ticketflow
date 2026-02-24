@@ -14,7 +14,9 @@ class TicketsController extends BaseController
 {
     public function __construct(
         private TicketService $service
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     public function register_routes(): void
     {

@@ -11,7 +11,10 @@ defined('ABSPATH') || exit;
 
 abstract class BaseController extends WP_REST_Controller
 {
-    protected string $namespace = 'ticketflow/v1';
+    public function __construct()
+    {
+        $this->namespace = 'ticketflow/v1';
+    }
 
     protected function success(mixed $data = null, int $status = 200): WP_REST_Response
     {
@@ -31,12 +34,12 @@ abstract class BaseController extends WP_REST_Controller
         return $response;
     }
 
-    protected function is_authenticated(): bool
+    public function is_authenticated(): bool
     {
         return is_user_logged_in();
     }
 
-    protected function check_auth(WP_REST_Request $request): true|WP_Error
+    public function check_auth(WP_REST_Request $request): true|WP_Error
     {
         if (!$this->is_authenticated()) {
             return $this->error('unauthorized', __('Authentication required.', 'ticketflow'), 401);
@@ -44,7 +47,7 @@ abstract class BaseController extends WP_REST_Controller
         return true;
     }
 
-    protected function check_cap(string $capability): true|WP_Error
+    public function check_cap(string $capability): true|WP_Error
     {
         if (!current_user_can($capability)) {
             return $this->error('forbidden', __('You do not have permission.', 'ticketflow'), 403);
@@ -60,7 +63,7 @@ abstract class BaseController extends WP_REST_Controller
         ];
     }
 
-    protected function get_role(): string
+    public function get_role(): string
     {
         $user = wp_get_current_user();
         if (in_array('administrator', $user->roles, true) || in_array('ticketflow_admin', $user->roles, true)) {
@@ -72,7 +75,7 @@ abstract class BaseController extends WP_REST_Controller
         return 'client';
     }
 
-    protected function is_agent_or_admin(): bool
+    public function is_agent_or_admin(): bool
     {
         return in_array($this->get_role(), ['agent', 'admin'], true);
     }
