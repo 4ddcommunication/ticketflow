@@ -41,7 +41,10 @@ class PortalShortcode
     public function add_module_type(string $tag, string $handle, string $src): string
     {
         if (in_array($handle, ['ticketflow-shared-js', 'ticketflow-portal-js', 'ticketflow-portal-vite'], true)) {
-            $tag = str_replace(' src=', ' type="module" src=', $tag);
+            $tag = str_replace('type="text/javascript"', 'type="module"', $tag);
+            if (!str_contains($tag, 'type="module"')) {
+                $tag = str_replace('<script ', '<script type="module" ', $tag);
+            }
         }
         return $tag;
     }
