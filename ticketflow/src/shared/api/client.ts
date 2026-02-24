@@ -103,10 +103,45 @@ export async function paginatedRequest<T>(
     };
 }
 
+/**
+ * Public request — no nonce, no cookies. For unauthenticated endpoints.
+ */
+async function publicRequest<T>(
+    path: string,
+    options: RequestInit = {}
+): Promise<T> {
+    const { apiUrl } = cfg();
+    const url = `${apiUrl}${path}`;
+
+    const headers: Record<string, string> = {
+        ...(options.headers as Record<string, string> || {}),
+    };
+
+    if (options.body && typeof options.body === 'string') {
+        headers['Content-Type'] = 'application/json';
+    }
+
+    const res = await fetch(url, { ...options, headers });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        const msg = data?.message || `Request failed (${res.status})`;
+        throw new Error(msg);
+    }
+
+    return data as T;
+}
+
 export const api = {
     get: <T>(path: string) => request<T>(path, { method: 'GET' }),
     post: <T>(path: string, body?: unknown) =>
         request<T>(path, {
+            method: 'POST',
+            body: body ? JSON.stringify(body) : undefined,
+        }),
+    publicPost: <T>(path: string, body?: unknown) =>
+        publicRequest<T>(path, {
             method: 'POST',
             body: body ? JSON.stringify(body) : undefined,
         }),

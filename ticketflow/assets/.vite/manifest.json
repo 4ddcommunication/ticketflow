@@ -3,8 +3,8 @@
     "file": "styles/styles.css",
     "src": "_styles-!~{001}~.js"
   },
-  "_styles-B0Wx6hWc.js": {
-    "file": "styles/chunks/styles-B0Wx6hWc.js",
+  "_styles-BCkKBTWM.js": {
+    "file": "styles/chunks/styles-BCkKBTWM.js",
     "name": "styles",
     "css": [
       "styles/styles.css"
@@ -16,7 +16,7 @@
     "src": "src/admin/main.tsx",
     "isEntry": true,
     "imports": [
-      "_styles-B0Wx6hWc.js"
+      "_styles-BCkKBTWM.js"
     ]
   },
   "src/portal/main.tsx": {
@@ -25,7 +25,7 @@
     "src": "src/portal/main.tsx",
     "isEntry": true,
     "imports": [
-      "_styles-B0Wx6hWc.js"
+      "_styles-BCkKBTWM.js"
     ]
   }
 }

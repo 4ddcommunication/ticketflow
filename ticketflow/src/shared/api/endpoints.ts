@@ -7,7 +7,7 @@ import type {
 // Auth
 export const authApi = {
     requestMagicLink: (email: string) =>
-        api.post<{ message: string }>('/auth/magic-link', { email }),
+        api.publicPost<{ message: string }>('/auth/magic-link', { email }),
     verify: (token: string) =>
         api.get<User>(`/auth/verify?token=${encodeURIComponent(token)}`),
     me: () => api.get<User>('/auth/me'),
