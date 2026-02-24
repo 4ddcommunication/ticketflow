@@ -56,9 +56,8 @@ class AuthController extends BaseController
             return $result;
         }
 
-        // Always return success to not reveal user existence
         return $this->success([
-            'message' => __('If an account exists with that email, a login link has been sent.', 'ticketflow'),
+            'message' => __('A login link has been sent to your email. Check your inbox.', 'ticketflow'),
         ]);
     }
 

@@ -19,8 +19,7 @@ class AuthService
 
         $user = get_user_by('email', $email);
         if (!$user) {
-            // Don't reveal whether email exists
-            return true;
+            return new WP_Error('not_a_client', __('No account found with this email. Please contact support to get access.', 'ticketflow'), ['status' => 404]);
         }
 
         // Rate limit: max 3 per 15 minutes
