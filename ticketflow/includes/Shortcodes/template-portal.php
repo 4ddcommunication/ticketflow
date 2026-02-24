@@ -16,45 +16,6 @@ $config = [
     'companyName' => $company,
     'error'       => $error,
 ];
-
-// Strip all theme/plugin styles and scripts — standalone page
-add_action('wp_enqueue_scripts', function () {
-    global $wp_styles, $wp_scripts;
-    if ($wp_styles) {
-        foreach ($wp_styles->registered as $handle => $dep) {
-            if (strpos($handle, 'ticketflow') === false) {
-                wp_dequeue_style($handle);
-                wp_deregister_style($handle);
-            }
-        }
-    }
-    if ($wp_scripts) {
-        foreach ($wp_scripts->registered as $handle => $dep) {
-            if (strpos($handle, 'ticketflow') === false) {
-                wp_dequeue_script($handle);
-                wp_deregister_script($handle);
-            }
-        }
-    }
-}, 999);
-
-// Remove WP emoji
-remove_action('wp_head', 'print_emoji_detection_script', 7);
-remove_action('wp_print_styles', 'print_emoji_styles');
-
-// Remove WP embed
-remove_action('wp_head', 'wp_oembed_add_discovery_links');
-remove_action('wp_head', 'wp_oembed_add_host_js');
-
-// Remove other WP head clutter
-remove_action('wp_head', 'rest_output_link_wp_head');
-remove_action('wp_head', 'wp_resource_hints', 2);
-remove_action('wp_head', 'feed_links', 2);
-remove_action('wp_head', 'feed_links_extra', 3);
-remove_action('wp_head', 'rsd_link');
-remove_action('wp_head', 'wlwmanifest_link');
-remove_action('wp_head', 'wp_generator');
-remove_action('wp_head', 'wp_shortlink_wp_head');
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -70,13 +31,11 @@ remove_action('wp_head', 'wp_shortlink_wp_head');
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f9fafb; min-height: 100vh; }
     </style>
-    <?php wp_head(); ?>
 </head>
 <body>
     <div id="ticketflow-portal" data-config="<?php echo esc_attr(wp_json_encode($config)); ?>"></div>
 
     <script type="module" src="<?php echo esc_url($base_url . 'styles/chunks/' . $shared_chunk . '?ver=' . TICKETFLOW_VERSION); ?>"></script>
     <script type="module" src="<?php echo esc_url($base_url . 'portal/portal.js?ver=' . TICKETFLOW_VERSION); ?>"></script>
-    <?php wp_footer(); ?>
 </body>
 </html>
