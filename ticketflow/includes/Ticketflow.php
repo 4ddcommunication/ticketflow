@@ -34,10 +34,10 @@ final class Ticketflow
         $magic_link = new Auth\MagicLink($auth_service);
         add_action('init', [$magic_link, 'intercept_token']);
 
-        // Admin
+        // Admin (menu + notices inside admin, template override on frontend)
+        $admin = new Admin\Admin();
+        $admin->init();
         if (is_admin()) {
-            $admin = new Admin\Admin();
-            $admin->init();
             $this->admin_notices();
         }
 

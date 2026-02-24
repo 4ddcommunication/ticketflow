@@ -9,83 +9,63 @@ class Admin
     public function init(): void
     {
         add_action('admin_menu', [$this, 'add_menu']);
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_assets']);
+
+        // Intercept the dashboard page and serve standalone app
+        add_filter('template_include', [$this, 'standalone_template']);
         add_filter('script_loader_tag', [$this, 'add_module_type'], 10, 3);
     }
 
     public function add_menu(): void
     {
+        // WP admin menu redirects to standalone page
+        $page_id = get_option('ticketflow_dashboard_page_id');
+        $url = $page_id ? get_permalink($page_id) : admin_url();
+
         add_menu_page(
             __('Ticketflow', 'ticketflow'),
             __('Ticketflow', 'ticketflow'),
-            'ticketflow_view_own_tickets',
+            'ticketflow_view_all_tickets',
             'ticketflow',
-            [$this, 'render_app'],
+            '',
             'dashicons-tickets-alt',
             26
         );
-    }
 
-    public function render_app(): void
-    {
-        echo '<div id="ticketflow-admin" class="wrap"></div>';
-    }
-
-    public function enqueue_assets(string $hook): void
-    {
-        if ($hook !== 'toplevel_page_ticketflow') {
-            return;
+        // Redirect the WP admin page to standalone
+        global $submenu;
+        if (isset($submenu['ticketflow'])) {
+            $submenu['ticketflow'][0][2] = $url;
         }
-
-        $manifest_path = TICKETFLOW_DIR . 'assets/.vite/manifest.json';
-        if (!file_exists($manifest_path)) {
-            wp_enqueue_script(
-                'ticketflow-admin-vite',
-                'http://localhost:5173/src/admin/main.tsx',
-                [],
-                null,
-                true
-            );
-            $this->localize_script('ticketflow-admin-vite');
-            return;
-        }
-
-        $base_url = TICKETFLOW_URL . 'assets/';
-
-        wp_enqueue_style(
-            'ticketflow-css',
-            $base_url . 'styles/styles.css',
-            [],
-            TICKETFLOW_VERSION
-        );
-
-        wp_enqueue_script(
-            'ticketflow-shared-js',
-            $base_url . 'styles/chunks/' . $this->get_shared_chunk(),
-            [],
-            TICKETFLOW_VERSION,
-            true
-        );
-
-        wp_enqueue_script(
-            'ticketflow-admin-js',
-            $base_url . 'admin/admin.js',
-            ['ticketflow-shared-js'],
-            TICKETFLOW_VERSION,
-            true
-        );
-
-        $this->localize_script('ticketflow-admin-js');
     }
 
     /**
-     * Add type="module" to our script tags so ES module imports work.
+     * Serve standalone template for the dashboard page.
      */
+    public function standalone_template(string $template): string
+    {
+        $page_id = get_option('ticketflow_dashboard_page_id');
+        if (!$page_id || !is_page($page_id)) {
+            return $template;
+        }
+
+        // Must be logged in with staff access
+        if (!is_user_logged_in()) {
+            wp_redirect(wp_login_url(get_permalink($page_id)));
+            exit;
+        }
+
+        if (!current_user_can('ticketflow_view_all_tickets')) {
+            wp_redirect(home_url());
+            exit;
+        }
+
+        return TICKETFLOW_DIR . 'includes/Admin/template-dashboard.php';
+    }
+
     public function add_module_type(string $tag, string $handle, string $src): string
     {
-        if (in_array($handle, ['ticketflow-shared-js', 'ticketflow-admin-js', 'ticketflow-admin-vite'], true)) {
+        if (in_array($handle, ['ticketflow-shared-js', 'ticketflow-admin-js'], true)) {
             $tag = str_replace('type="text/javascript"', 'type="module"', $tag);
-            // Fallback if no type attribute present
             if (!str_contains($tag, 'type="module"')) {
                 $tag = str_replace('<script ', '<script type="module" ', $tag);
             }
@@ -93,9 +73,13 @@ class Admin
         return $tag;
     }
 
-    private function get_shared_chunk(): string
+    public static function get_shared_chunk(): string
     {
         $manifest_path = TICKETFLOW_DIR . 'assets/.vite/manifest.json';
+        if (!file_exists($manifest_path)) {
+            return 'styles.js';
+        }
+
         $manifest = json_decode(file_get_contents($manifest_path), true);
 
         foreach ($manifest as $entry) {
@@ -105,15 +89,5 @@ class Admin
         }
 
         return 'styles.js';
-    }
-
-    private function localize_script(string $handle): void
-    {
-        wp_localize_script($handle, 'ticketflowAdmin', [
-            'apiUrl'   => rest_url('ticketflow/v1'),
-            'nonce'    => wp_create_nonce('wp_rest'),
-            'adminUrl' => admin_url(),
-            'userId'   => get_current_user_id(),
-        ]);
     }
 }

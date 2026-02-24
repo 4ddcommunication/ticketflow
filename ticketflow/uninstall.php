@@ -42,15 +42,20 @@ if ($admin_role) {
     }
 }
 
-// Remove portal page
+// Remove pages
 $portal_page_id = get_option('ticketflow_portal_page_id');
 if ($portal_page_id) {
     wp_delete_post($portal_page_id, true);
+}
+$dashboard_page_id = get_option('ticketflow_dashboard_page_id');
+if ($dashboard_page_id) {
+    wp_delete_post($dashboard_page_id, true);
 }
 
 // Remove options
 delete_option('ticketflow_settings');
 delete_option('ticketflow_portal_page_id');
+delete_option('ticketflow_dashboard_page_id');
 delete_option('ticketflow_db_version');
 
 // Remove upload directory

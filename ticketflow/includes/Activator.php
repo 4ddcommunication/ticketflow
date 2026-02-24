@@ -12,6 +12,7 @@ class Activator
         self::create_roles();
         self::grant_admin_caps();
         self::create_portal_page();
+        self::create_dashboard_page();
         self::create_upload_dir();
         self::set_defaults();
         self::schedule_cron();
@@ -107,6 +108,26 @@ class Activator
 
         if ($page_id && !is_wp_error($page_id)) {
             update_option('ticketflow_portal_page_id', $page_id);
+        }
+    }
+
+    private static function create_dashboard_page(): void
+    {
+        $page_id = get_option('ticketflow_dashboard_page_id');
+        if ($page_id && get_post_status($page_id)) {
+            return;
+        }
+
+        $page_id = wp_insert_post([
+            'post_title'   => __('Ticketflow', 'ticketflow'),
+            'post_content' => '',
+            'post_status'  => 'publish',
+            'post_type'    => 'page',
+            'post_name'    => 'ticketflow',
+        ]);
+
+        if ($page_id && !is_wp_error($page_id)) {
+            update_option('ticketflow_dashboard_page_id', $page_id);
         }
     }
 
