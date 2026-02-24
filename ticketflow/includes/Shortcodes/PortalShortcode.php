@@ -9,6 +9,7 @@ class PortalShortcode
     public function init(): void
     {
         add_shortcode('ticketflow_portal', [$this, 'render']);
+        add_filter('script_loader_tag', [$this, 'add_module_type'], 10, 3);
     }
 
     public function render(array $atts = []): string
@@ -34,12 +35,22 @@ class PortalShortcode
         return "<div id=\"ticketflow-portal\" data-config=\"{$json}\"></div>";
     }
 
+    /**
+     * Add type="module" to our script tags so ES module imports work.
+     */
+    public function add_module_type(string $tag, string $handle, string $src): string
+    {
+        if (in_array($handle, ['ticketflow-shared-js', 'ticketflow-portal-js', 'ticketflow-portal-vite'], true)) {
+            $tag = str_replace(' src=', ' type="module" src=', $tag);
+        }
+        return $tag;
+    }
+
     private function enqueue_assets(): void
     {
         $manifest_path = TICKETFLOW_DIR . 'assets/.vite/manifest.json';
 
         if (!file_exists($manifest_path)) {
-            // Dev mode
             wp_enqueue_script(
                 'ticketflow-portal-vite',
                 'http://localhost:5173/src/portal/main.tsx',
@@ -59,7 +70,6 @@ class PortalShortcode
             TICKETFLOW_VERSION
         );
 
-        // Shared chunk (React + shared components)
         $shared_chunk = $this->get_shared_chunk();
         wp_enqueue_script(
             'ticketflow-shared-js',

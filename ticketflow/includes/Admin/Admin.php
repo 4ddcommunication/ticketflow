@@ -10,6 +10,7 @@ class Admin
     {
         add_action('admin_menu', [$this, 'add_menu']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_assets']);
+        add_filter('script_loader_tag', [$this, 'add_module_type'], 10, 3);
     }
 
     public function add_menu(): void
@@ -38,7 +39,6 @@ class Admin
 
         $manifest_path = TICKETFLOW_DIR . 'assets/.vite/manifest.json';
         if (!file_exists($manifest_path)) {
-            // Dev mode — Vite dev server
             wp_enqueue_script(
                 'ticketflow-admin-vite',
                 'http://localhost:5173/src/admin/main.tsx',
@@ -62,7 +62,7 @@ class Admin
         wp_enqueue_script(
             'ticketflow-shared-js',
             $base_url . 'styles/chunks/' . $this->get_shared_chunk(),
-            ['wp-element'],
+            [],
             TICKETFLOW_VERSION,
             true
         );
@@ -76,6 +76,17 @@ class Admin
         );
 
         $this->localize_script('ticketflow-admin-js');
+    }
+
+    /**
+     * Add type="module" to our script tags so ES module imports work.
+     */
+    public function add_module_type(string $tag, string $handle, string $src): string
+    {
+        if (in_array($handle, ['ticketflow-shared-js', 'ticketflow-admin-js', 'ticketflow-admin-vite'], true)) {
+            $tag = str_replace(' src=', ' type="module" src=', $tag);
+        }
+        return $tag;
     }
 
     private function get_shared_chunk(): string
