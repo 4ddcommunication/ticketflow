@@ -42,6 +42,9 @@ export function App() {
                     <Route path="/tickets/:id" element={<TicketDetail accentColor={accentColor} />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
+                <footer className="tf-mt-12 tf-py-4 tf-border-t tf-border-gray-200 tf-text-center tf-text-xs tf-text-gray-400">
+                    <a href="https://kleinbooks.de/datenschutz" target="_blank" rel="noopener noreferrer" className="tf-text-gray-400 hover:tf-text-gray-600 tf-transition-colors">Datenschutz</a>
+                </footer>
             </div>
         </HashRouter>
     );

@@ -23,6 +23,7 @@ export default defineConfig(({ mode }) => {
                 '@portal': path.resolve(__dirname, 'src/portal'),
             },
         },
+        publicDir: 'public',
         build: {
             outDir: 'assets',
             emptyOutDir: true,
