@@ -30,28 +30,26 @@ Agency ticket system for WordPress. A self-hosted support portal and admin dashb
 ## Project Structure
 
 ```
-ticket-system/
-├── ticketflow/                  # WordPress plugin
-│   ├── ticketflow.php           # Plugin entry point
-│   ├── src/                     # Frontend source (React/TS)
-│   │   ├── admin/               # Admin dashboard SPA
-│   │   ├── portal/              # Client portal SPA
-│   │   └── shared/              # Shared components, hooks, API
-│   ├── includes/                # PHP backend
-│   │   ├── Admin/               # WP admin menu + dashboard template
-│   │   ├── API/                 # REST API controllers
-│   │   ├── Auth/                # Magic link + permissions
-│   │   ├── Database/            # Schema + migrations
-│   │   ├── Email/               # Email manager + templates
-│   │   ├── Models/              # Ticket, Reply, Attachment, etc.
-│   │   ├── Services/            # Business logic
-│   │   └── Shortcodes/          # Portal shortcode + template
-│   ├── assets/                  # Built frontend (Vite output)
-│   ├── public/                  # Static assets (fonts)
-│   ├── vite.config.ts
-│   ├── tailwind.config.js
-│   └── package.json
-├── *.html                       # Design prototypes (pre-plugin)
+ticketflow/
+├── ticketflow.php               # Plugin entry point
+├── src/                         # Frontend source (React/TS)
+│   ├── admin/                   # Admin dashboard SPA
+│   ├── portal/                  # Client portal SPA
+│   └── shared/                  # Shared components, hooks, API
+├── includes/                    # PHP backend
+│   ├── Admin/                   # WP admin menu + dashboard template
+│   ├── API/                     # REST API controllers
+│   ├── Auth/                    # Magic link + permissions
+│   ├── Database/                # Schema + migrations
+│   ├── Email/                   # Email manager + templates
+│   ├── Models/                  # Ticket, Reply, Attachment, etc.
+│   ├── Services/                # Business logic
+│   └── Shortcodes/              # Portal shortcode + template
+├── assets/                      # Built frontend (Vite output)
+├── public/                      # Static assets (fonts)
+├── vite.config.ts
+├── tailwind.config.js
+├── package.json
 ├── CHANGELOG.md
 └── README.md
 ```
@@ -67,10 +65,9 @@ ticket-system/
 
 ### Install
 
-1. Clone this repo
+1. Clone this repo into `wp-content/plugins/ticketflow/`
 2. Install dependencies:
    ```bash
-   cd ticketflow
    composer install
    npm install
    ```
@@ -78,7 +75,6 @@ ticket-system/
    ```bash
    npm run build
    ```
-4. Copy or symlink the `ticketflow/` directory into your WordPress `wp-content/plugins/`
 5. Activate the plugin in WordPress admin
 6. On activation, the plugin creates:
    - 7 database tables (`wp_ticketflow_*`)
@@ -89,7 +85,6 @@ ticket-system/
 ### Development
 
 ```bash
-cd ticketflow
 npm run dev          # Vite dev server with HMR
 npm run build        # Production build (both admin + portal)
 npm run build:admin  # Build admin dashboard only
@@ -100,9 +95,9 @@ npm run build:portal # Build client portal only
 
 ```bash
 rsync -avz --delete -e 'ssh -p 65002' \
-  ticketflow/ \
+  ./ \
   user@server:path/to/wp-content/plugins/ticketflow/ \
-  --exclude='node_modules' --exclude='src' --exclude='.git'
+  --exclude='node_modules' --exclude='src' --exclude='.git' --exclude='*.md'
 ```
 
 ## Database Tables
