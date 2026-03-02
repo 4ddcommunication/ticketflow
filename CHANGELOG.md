@@ -2,6 +2,30 @@
 
 All notable changes to Ticketflow are documented in this file.
 
+## [1.0.3] — 2026-03-02
+
+### Added
+- Settings: "Ticket Categories" is now its own section with explanation and example
+- Settings: "Service Level Agreement (SLA)" section with description, all 3 fields inline
+- Settings: hint text on Portal Accent Color field
+- Dashboard stat cards: number displayed above label for better visual hierarchy
+- Page titles (Dashboard, Tickets, Clients, Settings) use subtle uppercase style
+- Installable `ticketflow.zip` included in repo — upload directly via WP Plugins > Add New
+
+## [1.0.2] — 2026-03-02
+
+### Added
+- WP Admin onboarding page with stats, getting started guide, and "Launch Dashboard" CTA
+- Status legend on Tickets page explaining each status
+- Client management hints (roles, login flow, permissions)
+- Activity log in ticket detail sidebar (replaces tabs)
+- WP Admin and Logout links in sidebar footer
+- User name and role in top-right header bar
+
+### Changed
+- Removed Saved Replies from navigation
+- Clients page now includes both `ticketflow_client` and `subscriber` roles
+
 ## [1.0.1] — 2026-03-02
 
 ### Fixed

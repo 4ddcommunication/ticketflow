@@ -17,25 +17,88 @@ class Admin
 
     public function add_menu(): void
     {
-        // WP admin menu redirects to standalone page
-        $page_id = get_option('ticketflow_dashboard_page_id');
-        $url = $page_id ? get_permalink($page_id) : admin_url();
-
         add_menu_page(
             __('Ticketflow', 'ticketflow'),
             __('Ticketflow', 'ticketflow'),
             'ticketflow_view_all_tickets',
             'ticketflow',
-            '',
+            [$this, 'render_admin_page'],
             'dashicons-tickets-alt',
             26
         );
+    }
 
-        // Redirect the WP admin page to standalone
-        global $submenu;
-        if (isset($submenu['ticketflow'])) {
-            $submenu['ticketflow'][0][2] = $url;
-        }
+    /**
+     * Render the wp-admin onboarding page.
+     */
+    public function render_admin_page(): void
+    {
+        $dashboard_page_id = get_option('ticketflow_dashboard_page_id');
+        $portal_page_id    = get_option('ticketflow_portal_page_id');
+        $dashboard_url     = $dashboard_page_id ? get_permalink($dashboard_page_id) : '#';
+        $portal_url        = $portal_page_id ? get_permalink($portal_page_id) : '#';
+        $settings          = get_option('ticketflow_settings', []);
+        $company           = esc_html($settings['company_name'] ?? get_bloginfo('name'));
+
+        $stats = $this->get_quick_stats();
+
+        ?>
+        <style>
+            .tf-admin-wrap { max-width: 1200px; margin: 20px 20px 20px 2px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+            .tf-admin-header { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 32px; margin-bottom: 24px; }
+            .tf-admin-header h1 { font-size: 24px; font-weight: 700; color: #111827; margin: 0 0 8px; }
+            .tf-admin-header p { color: #6b7280; font-size: 14px; margin: 0 0 24px; }
+            .tf-launch-btn { display: inline-block; background: #4f46e5; color: #fff; padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: 600; text-decoration: none; transition: background .15s; }
+            .tf-launch-btn:hover, .tf-launch-btn:focus { background: #4338ca; color: #fff; }
+            .tf-portal-link { display: inline-block; margin-left: 12px; color: #6b7280; font-size: 14px; text-decoration: none; }
+            .tf-portal-link:hover { color: #111827; }
+            .tf-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+            .tf-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; }
+            .tf-card-label { font-size: 12px; font-weight: 500; color: #9ca3af; text-transform: uppercase; letter-spacing: .05em; }
+            .tf-card-value { font-size: 28px; font-weight: 700; color: #111827; margin-top: 4px; }
+            .tf-guide { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px; }
+            .tf-guide h2 { font-size: 16px; font-weight: 600; color: #111827; margin: 0 0 16px; }
+            .tf-guide-steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
+            .tf-guide-steps li { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 14px; color: #374151; counter-increment: step; }
+            .tf-guide-steps li:last-child { border-bottom: none; }
+            .tf-guide-steps li::before { content: counter(step); display: flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #eef2ff; color: #4f46e5; border-radius: 50%; font-size: 12px; font-weight: 600; }
+            .tf-guide-steps code { background: #f3f4f6; padding: 1px 6px; border-radius: 4px; font-size: 13px; color: #4b5563; }
+        </style>
+        <div class="tf-admin-wrap">
+            <div class="tf-admin-header">
+                <h1>Ticketflow</h1>
+                <p>Support ticket system for <?php echo $company; ?>. Manage client tickets, track SLA, and collaborate with your team.</p>
+                <a href="<?php echo esc_url($dashboard_url); ?>" class="tf-launch-btn">Launch Dashboard &rarr;</a>
+                <a href="<?php echo esc_url($portal_url); ?>" class="tf-portal-link" target="_blank">View Client Portal &nearr;</a>
+            </div>
+
+            <div class="tf-cards">
+                <div class="tf-card">
+                    <div class="tf-card-label">Total Tickets</div>
+                    <div class="tf-card-value"><?php echo (int) $stats['total']; ?></div>
+                </div>
+                <div class="tf-card">
+                    <div class="tf-card-label">Open</div>
+                    <div class="tf-card-value"><?php echo (int) $stats['open']; ?></div>
+                </div>
+                <div class="tf-card">
+                    <div class="tf-card-label">Unassigned</div>
+                    <div class="tf-card-value"><?php echo (int) $stats['unassigned']; ?></div>
+                </div>
+            </div>
+
+            <div class="tf-guide">
+                <h2>Getting Started</h2>
+                <ol class="tf-guide-steps">
+                    <li>Add clients via the Dashboard under <strong>Clients</strong>, or create WordPress users with the <code>subscriber</code> or <code>ticketflow_client</code> role.</li>
+                    <li>Clients log in through the <strong>Client Portal</strong> using a magic link sent to their email — no password needed.</li>
+                    <li>Assign staff the <code>ticketflow_agent</code> or <code>ticketflow_admin</code> role in <strong>Users &rarr; Edit User</strong> to give them dashboard access.</li>
+                    <li>Configure categories, SLA deadlines, email settings, and branding in <strong>Dashboard &rarr; Settings</strong>.</li>
+                    <li>Tickets flow through statuses: <strong>Open</strong> &rarr; <strong>In Progress</strong> &rarr; <strong>Waiting</strong> &rarr; <strong>Resolved</strong> &rarr; <strong>Closed</strong>. Resolved tickets auto-close after the configured idle period.</li>
+                </ol>
+            </div>
+        </div>
+        <?php
     }
 
     /**
@@ -89,5 +152,17 @@ class Admin
         }
 
         return 'styles.js';
+    }
+
+    private function get_quick_stats(): array
+    {
+        global $wpdb;
+        $table = \Ticketflow\Database\Schema::table('tickets');
+
+        $total = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$table}");
+        $open  = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM %i WHERE status IN ('open','in_progress','waiting')", $table));
+        $unassigned = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM %i WHERE agent_id IS NULL AND status != 'closed'", $table));
+
+        return compact('total', 'open', 'unassigned');
     }
 }

@@ -26,7 +26,7 @@ export function Dashboard() {
 
     return (
         <div>
-            <h2 className="tf-text-2xl tf-font-bold tf-text-gray-900 tf-mb-6">Dashboard</h2>
+            <h2 className="tf-text-sm tf-font-semibold tf-uppercase tf-tracking-wide tf-text-gray-500 tf-mb-6">Dashboard</h2>
 
             {stats && (
                 <div className="tf-grid tf-grid-cols-2 lg:tf-grid-cols-4 tf-gap-4 tf-mb-8">
@@ -71,8 +71,8 @@ export function Dashboard() {
 function StatCard({ label, value, color = 'gray' }: { label: string; value: number; color?: string }) {
     return (
         <div className="tf-rounded-lg tf-p-4 tf-bg-white tf-border tf-border-gray-200 tf-text-gray-900">
-            <p className="tf-text-sm tf-font-medium tf-text-gray-500">{label}</p>
-            <p className="tf-text-3xl tf-font-bold tf-mt-1">{value}</p>
+            <p className="tf-text-3xl tf-font-bold">{value}</p>
+            <p className="tf-text-sm tf-font-medium tf-text-gray-500 tf-mt-1">{label}</p>
         </div>
     );
 }

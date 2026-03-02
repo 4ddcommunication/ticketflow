@@ -49,7 +49,7 @@ export function ClientsPage() {
     return (
         <div>
             <div className="tf-flex tf-justify-between tf-items-center tf-mb-6">
-                <h2 className="tf-text-2xl tf-font-bold tf-text-gray-900">Clients</h2>
+                <h2 className="tf-text-sm tf-font-semibold tf-uppercase tf-tracking-wide tf-text-gray-500">Clients</h2>
                 <button
                     onClick={() => setShowNew(!showNew)}
                     className="tf-bg-primary-600 tf-text-white tf-px-4 tf-py-2 tf-rounded-lg tf-text-sm tf-font-medium hover:tf-bg-primary-700"

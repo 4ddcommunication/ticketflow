@@ -36,8 +36,8 @@ export function SettingsPage() {
     }
 
     return (
-        <div className="tf-max-w-2xl">
-            <h2 className="tf-text-2xl tf-font-bold tf-text-gray-900 tf-mb-6">Settings</h2>
+        <div className="tf-max-w-4xl">
+            <h2 className="tf-text-sm tf-font-semibold tf-uppercase tf-tracking-wide tf-text-gray-500 tf-mb-6">Settings</h2>
 
             <div className="tf-bg-white tf-rounded-lg tf-shadow-sm tf-border tf-border-gray-200 tf-divide-y tf-divide-gray-200">
                 <Section title="General">
@@ -49,7 +49,7 @@ export function SettingsPage() {
                             className="tf-input"
                         />
                     </Field>
-                    <Field label="Portal Accent Color">
+                    <Field label="Portal Accent Color" hint="Applies to the client portal header and email template branding">
                         <div className="tf-flex tf-items-center tf-gap-2">
                             <input
                                 type="color"
@@ -65,18 +65,30 @@ export function SettingsPage() {
                             />
                         </div>
                     </Field>
-                    <Field label="Categories (comma-separated)">
+                </Section>
+
+                <Section title="Ticket Categories">
+                    <p className="tf-text-sm tf-text-gray-500 tf-mb-3">
+                        When a client creates a new ticket, they must select one of these categories. This helps your team triage and route tickets faster. Separate each category with a comma.
+                    </p>
+                    <Field label="Categories">
                         <input
                             type="text"
                             value={settings.categories.join(', ')}
                             onChange={(e) => update('categories', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
-                            className="tf-input"
+                            className="tf-input tf-w-full"
                         />
                     </Field>
+                    <p className="tf-text-xs tf-text-gray-400">
+                        Example: Billing, Technical Support, Account, General Inquiry
+                    </p>
                 </Section>
 
-                <Section title="SLA">
-                    <div className="tf-grid tf-grid-cols-2 tf-gap-4">
+                <Section title="Service Level Agreement (SLA)">
+                    <p className="tf-text-sm tf-text-gray-500 tf-mb-3">
+                        SLA defines the maximum time your team has to respond to and resolve tickets. Breached deadlines are flagged in the ticket list. Auto-close removes resolved tickets that have had no activity for the configured number of days.
+                    </p>
+                    <div className="tf-grid tf-grid-cols-3 tf-gap-4">
                         <Field label="Response Time (hours)">
                             <input
                                 type="number"
@@ -93,15 +105,15 @@ export function SettingsPage() {
                                 className="tf-input"
                             />
                         </Field>
+                        <Field label="Auto-close after (days)">
+                            <input
+                                type="number"
+                                value={settings.auto_close_days}
+                                onChange={(e) => update('auto_close_days', parseInt(e.target.value))}
+                                className="tf-input"
+                            />
+                        </Field>
                     </div>
-                    <Field label="Auto-close after (days)">
-                        <input
-                            type="number"
-                            value={settings.auto_close_days}
-                            onChange={(e) => update('auto_close_days', parseInt(e.target.value))}
-                            className="tf-input tf-w-32"
-                        />
-                    </Field>
                 </Section>
 
                 <Section title="Email">
@@ -175,10 +187,11 @@ function Section({ title, children }: { title: string; children: React.ReactNode
     );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
     return (
         <div>
             <label className="tf-block tf-text-sm tf-text-gray-600 tf-mb-1">{label}</label>
+            {hint && <p className="tf-text-xs tf-text-gray-400 tf-mb-1">{hint}</p>}
             {children}
         </div>
     );
