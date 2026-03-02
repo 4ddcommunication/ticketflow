@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Ticket System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>Ticketflow</h1>
+        <span>Support System</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Main</div>
+          <a href="dashboard.html" class="sidebar-link active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Dashboard
+          </a>
+          <a href="dashboard.html" class="sidebar-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+            All Tickets
+            <span class="badge">23</span>
+          </a>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Views</div>
+          <a href="#" class="sidebar-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Open
+            <span class="badge">12</span>
+          </a>
+          <a href="#" class="sidebar-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            In Progress
+            <span class="badge">5</span>
+          </a>
+          <a href="#" class="sidebar-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            On Hold
+            <span class="badge">3</span>
+          </a>
+          <a href="#" class="sidebar-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Resolved
+            <span class="badge">3</span>
+          </a>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Manage</div>
+          <a href="#" class="sidebar-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Clients
+          </a>
+          <a href="#" class="sidebar-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Team
+          </a>
+          <a href="#" class="sidebar-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Reports
+          </a>
+          <a href="#" class="sidebar-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-user">
+        <div class="avatar" style="background: #4f46e5;">KM</div>
+        <div class="user-info">
+          <div class="user-name">Khalil Mouelhi</div>
+          <div class="user-role">Admin</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h2>Dashboard</h2>
+        </div>
+        <div class="topbar-right">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search tickets...">
+            <span class="shortcut">/</span>
+          </div>
+          <button class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Ticket
+          </button>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <!-- Stats -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Open Tickets</div>
+            <div class="stat-value">12</div>
+            <div class="stat-change up">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+              3 new today
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">In Progress</div>
+            <div class="stat-value">5</div>
+            <div class="stat-change">
+              2 assigned to you
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg. Response</div>
+            <div class="stat-value">2.4h</div>
+            <div class="stat-change up">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+              18% faster
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Resolved this week</div>
+            <div class="stat-value">18</div>
+            <div class="stat-change up">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+              +6 vs last week
+            </div>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-bar">
+          <span class="filter-chip active">
+            All Tickets
+          </span>
+          <span class="filter-chip">
+            <span class="pill-dot" style="background: var(--status-open-text);"></span>
+            Open
+          </span>
+          <span class="filter-chip">
+            <span class="pill-dot" style="background: var(--status-progress-text);"></span>
+            In Progress
+          </span>
+          <span class="filter-chip">
+            <span class="pill-dot" style="background: var(--status-hold-text);"></span>
+            On Hold
+          </span>
+          <span class="filter-chip">
+            <span class="pill-dot" style="background: var(--status-resolved-text);"></span>
+            Resolved
+          </span>
+          <div class="filter-divider"></div>
+          <span class="filter-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            Priority
+          </span>
+          <span class="filter-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Assignee
+          </span>
+          <span class="filter-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Client
+          </span>
+        </div>
+
+        <!-- Ticket Table -->
+        <div class="ticket-table-wrap">
+          <table class="ticket-table">
+            <thead>
+              <tr>
+                <th style="width: 80px;">ID</th>
+                <th>Ticket</th>
+                <th style="width: 120px;">Status</th>
+                <th style="width: 100px;">Priority</th>
+                <th style="width: 100px;">Category</th>
+                <th style="width: 150px;">Assignee</th>
+                <th style="width: 140px;">Client</th>
+                <th style="width: 100px;">Updated</th>
+                <th style="width: 30px;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Row 1 — Critical / Open -->
+              <tr onclick="window.location='ticket-detail.html'">
+                <td><span class="ticket-id">#1024</span></td>
+                <td class="ticket-title-cell">
+                  <a href="ticket-detail.html" class="ticket-title">Website completely down — 500 error on all pages</a>
+                  <div class="ticket-excerpt">Getting a 500 Internal Server Error when trying to access any page on the website. This started happening after...</div>
+                </td>
+                <td><span class="pill pill-open"><span class="pill-dot"></span>Open</span></td>
+                <td><span class="pill pill-critical">Critical</span></td>
+                <td><span class="tag">Bug</span></td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #4f46e5;">KM</span>
+                    <span class="name">Khalil M.</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #0891b2;">AB</span>
+                    <span class="name">Autohaus Berg</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="time-cell">
+                    <span class="relative">2 min ago</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="attachment-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                  </span>
+                </td>
+              </tr>
+
+              <!-- Row 2 — High / In Progress -->
+              <tr>
+                <td><span class="ticket-id">#1023</span></td>
+                <td class="ticket-title-cell">
+                  <a href="ticket-detail.html" class="ticket-title">Contact form not sending emails to inbox</a>
+                  <div class="ticket-excerpt">Clients are filling out the contact form but we never receive the emails. The form shows a success message but...</div>
+                </td>
+                <td><span class="pill pill-progress"><span class="pill-dot"></span>In Progress</span></td>
+                <td><span class="pill pill-high">High</span></td>
+                <td><span class="tag">Bug</span></td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #7c3aed;">TS</span>
+                    <span class="name">Tom S.</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #059669;">MK</span>
+                    <span class="name">Meier Küchen</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="time-cell">
+                    <span class="relative">1 hour ago</span>
+                  </div>
+                </td>
+                <td></td>
+              </tr>
+
+              <!-- Row 3 — Medium / Open -->
+              <tr>
+                <td><span class="ticket-id">#1022</span></td>
+                <td class="ticket-title-cell">
+                  <a href="ticket-detail.html" class="ticket-title">Add new team member photos to About page</a>
+                  <div class="ticket-excerpt">We hired 3 new people and need their photos and bios added to the team section on the About page...</div>
+                </td>
+                <td><span class="pill pill-open"><span class="pill-dot"></span>Open</span></td>
+                <td><span class="pill pill-medium">Medium</span></td>
+                <td><span class="tag">Content</span></td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #9ca3af; font-size:11px;">—</span>
+                    <span class="name" style="color: var(--text-tertiary);">Unassigned</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #e11d48;">FW</span>
+                    <span class="name">Fischer & Weber</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="time-cell">
+                    <span class="relative">3 hours ago</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="attachment-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                  </span>
+                </td>
+              </tr>
+
+              <!-- Row 4 — High / On Hold -->
+              <tr>
+                <td><span class="ticket-id">#1021</span></td>
+                <td class="ticket-title-cell">
+                  <a href="ticket-detail.html" class="ticket-title">SSL certificate renewal — expiring in 5 days</a>
+                  <div class="ticket-excerpt">Our SSL certificate is about to expire and needs to be renewed before March 1st. Can you handle this?</div>
+                </td>
+                <td><span class="pill pill-hold"><span class="pill-dot"></span>On Hold</span></td>
+                <td><span class="pill pill-high">High</span></td>
+                <td><span class="tag">Maintenance</span></td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #4f46e5;">KM</span>
+                    <span class="name">Khalil M.</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #0891b2;">AB</span>
+                    <span class="name">Autohaus Berg</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="time-cell">
+                    <span class="relative">Yesterday</span>
+                  </div>
+                </td>
+                <td></td>
+              </tr>
+
+              <!-- Row 5 — Low / In Progress -->
+              <tr>
+                <td><span class="ticket-id">#1020</span></td>
+                <td class="ticket-title-cell">
+                  <a href="ticket-detail.html" class="ticket-title">Update footer links and add privacy policy page</a>
+                  <div class="ticket-excerpt">We need to add links to the new privacy policy and update the existing footer navigation to match the new...</div>
+                </td>
+                <td><span class="pill pill-progress"><span class="pill-dot"></span>In Progress</span></td>
+                <td><span class="pill pill-low">Low</span></td>
+                <td><span class="tag">Feature</span></td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #7c3aed;">TS</span>
+                    <span class="name">Tom S.</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #059669;">MK</span>
+                    <span class="name">Meier Küchen</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="time-cell">
+                    <span class="relative">Yesterday</span>
+                  </div>
+                </td>
+                <td></td>
+              </tr>
+
+              <!-- Row 6 — Medium / Resolved -->
+              <tr>
+                <td><span class="ticket-id">#1019</span></td>
+                <td class="ticket-title-cell">
+                  <a href="ticket-detail.html" class="ticket-title">Google Maps integration broken after API update</a>
+                  <div class="ticket-excerpt">The embedded map on our locations page stopped working. It shows "This page can't load Google Maps correctly"...</div>
+                </td>
+                <td><span class="pill pill-resolved"><span class="pill-dot"></span>Resolved</span></td>
+                <td><span class="pill pill-medium">Medium</span></td>
+                <td><span class="tag">Bug</span></td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #4f46e5;">KM</span>
+                    <span class="name">Khalil M.</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #e11d48;">FW</span>
+                    <span class="name">Fischer & Weber</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="time-cell">
+                    <span class="relative">2 days ago</span>
+                  </div>
+                </td>
+                <td></td>
+              </tr>
+
+              <!-- Row 7 — Low / Closed -->
+              <tr>
+                <td><span class="ticket-id">#1018</span></td>
+                <td class="ticket-title-cell">
+                  <a href="ticket-detail.html" class="ticket-title">Typo on homepage banner text</a>
+                  <div class="ticket-excerpt">There's a typo in the main banner headline. "Willkomen" should be "Willkommen"...</div>
+                </td>
+                <td><span class="pill pill-closed"><span class="pill-dot"></span>Closed</span></td>
+                <td><span class="pill pill-low">Low</span></td>
+                <td><span class="tag">Content</span></td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #7c3aed;">TS</span>
+                    <span class="name">Tom S.</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #ea580c;">SB</span>
+                    <span class="name">Schmidt Bau</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="time-cell">
+                    <span class="relative">3 days ago</span>
+                  </div>
+                </td>
+                <td></td>
+              </tr>
+
+              <!-- Row 8 -->
+              <tr>
+                <td><span class="ticket-id">#1017</span></td>
+                <td class="ticket-title-cell">
+                  <a href="ticket-detail.html" class="ticket-title">Mobile menu doesn't close after clicking a link</a>
+                  <div class="ticket-excerpt">When navigating on mobile, tapping a menu item takes you to the page but the hamburger menu stays open...</div>
+                </td>
+                <td><span class="pill pill-progress"><span class="pill-dot"></span>In Progress</span></td>
+                <td><span class="pill pill-medium">Medium</span></td>
+                <td><span class="tag">Bug</span></td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #4f46e5;">KM</span>
+                    <span class="name">Khalil M.</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="assignee-cell">
+                    <span class="avatar-sm" style="background: #ea580c;">SB</span>
+                    <span class="name">Schmidt Bau</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="time-cell">
+                    <span class="relative">4 days ago</span>
+                  </div>
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Pagination -->
+          <div class="pagination">
+            <div class="pagination-info">Showing 1–8 of 23 tickets</div>
+            <div class="pagination-controls">
+              <button class="pagination-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <button class="pagination-btn active">1</button>
+              <button class="pagination-btn">2</button>
+              <button class="pagination-btn">3</button>
+              <button class="pagination-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</body>
+</html>

@@ -69,16 +69,9 @@ export function Dashboard() {
 }
 
 function StatCard({ label, value, color = 'gray' }: { label: string; value: number; color?: string }) {
-    const colorClasses: Record<string, string> = {
-        gray: 'tf-bg-gray-50 tf-text-gray-900',
-        blue: 'tf-bg-blue-50 tf-text-blue-900',
-        purple: 'tf-bg-purple-50 tf-text-purple-900',
-        orange: 'tf-bg-orange-50 tf-text-orange-900',
-    };
-
     return (
-        <div className={`tf-rounded-lg tf-p-4 ${colorClasses[color]}`}>
-            <p className="tf-text-sm tf-font-medium tf-opacity-70">{label}</p>
+        <div className="tf-rounded-lg tf-p-4 tf-bg-white tf-border tf-border-gray-200 tf-text-gray-900">
+            <p className="tf-text-sm tf-font-medium tf-text-gray-500">{label}</p>
             <p className="tf-text-3xl tf-font-bold tf-mt-1">{value}</p>
         </div>
     );

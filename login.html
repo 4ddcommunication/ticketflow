@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Ticketflow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .auth-layout {
+      background: linear-gradient(135deg, #f8f9fb 0%, #eef2ff 100%);
+    }
+    .auth-card {
+      box-shadow: 0 8px 32px rgba(79, 70, 229, 0.08), 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .magic-input-group {
+      position: relative;
+    }
+    .magic-input-group svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-tertiary);
+    }
+    .magic-input-group input {
+      padding-left: 42px;
+    }
+    .btn-magic {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      justify-content: center;
+      margin-top: var(--space-md);
+    }
+
+    /* Success state */
+    .state-login { display: block; }
+    .state-sent { display: none; }
+
+    .show-sent .state-login { display: none; }
+    .show-sent .state-sent { display: block; }
+
+    .email-icon-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-full);
+      background: var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-lg);
+    }
+    .email-icon-wrap svg {
+      width: 28px;
+      height: 28px;
+      color: var(--accent);
+    }
+
+    .resend-link {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: var(--space-lg);
+    }
+    .resend-link a {
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-layout" id="authContainer">
+
+    <div class="auth-card">
+      <div class="auth-logo">T</div>
+
+      <!-- Login State -->
+      <div class="state-login">
+        <h1>Welcome back</h1>
+        <p class="auth-subtitle">Enter your email and we'll send you a magic link to sign in. No password needed.</p>
+
+        <div class="form-group">
+          <label style="font-size: 13px; font-weight: 600;">Email address</label>
+          <div class="magic-input-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <input type="email" class="form-input" placeholder="you@company.com" id="emailInput">
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-magic" onclick="sendMagicLink()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"/>
+            <line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+          Send Magic Link
+        </button>
+
+        <div class="auth-footer">
+          Powered by <strong>Ticketflow</strong>
+        </div>
+      </div>
+
+      <!-- Sent State -->
+      <div class="state-sent">
+        <div class="email-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <h1 style="font-size: 20px;">Check your inbox</h1>
+        <p class="auth-subtitle">We've sent a magic link to<br><strong id="sentEmail" style="color: var(--text-primary);">anna@autohaus-berg.de</strong></p>
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-md);">
+          Click the link in the email to sign in.<br>
+          The link expires in 15 minutes.
+        </p>
+
+        <div style="background: var(--bg); border-radius: var(--radius-md); padding: var(--space-md); margin-top: var(--space-md);">
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+            <strong>Didn't receive it?</strong> Check your spam folder or <a href="#" onclick="document.getElementById('authContainer').classList.remove('show-sent'); return false;">try again</a> with a different email.
+          </p>
+        </div>
+
+        <p class="resend-link">
+          <a href="#" onclick="sendMagicLink(); return false;">Resend magic link</a>
+        </p>
+
+        <div class="auth-footer">
+          Powered by <strong>Ticketflow</strong>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    function sendMagicLink() {
+      const email = document.getElementById('emailInput').value || 'anna@autohaus-berg.de';
+      document.getElementById('sentEmail').textContent = email;
+      document.getElementById('authContainer').classList.add('show-sent');
+    }
+
+    // Allow Enter key
+    document.getElementById('emailInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') sendMagicLink();
+    });
+  </script>
+</body>
+</html>

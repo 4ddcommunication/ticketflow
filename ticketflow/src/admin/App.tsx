@@ -25,7 +25,7 @@ export function App() {
 
     return (
         <HashRouter>
-            <div className="tf-flex tf-min-h-[calc(100vh-46px)] tf-bg-gray-50 tf--ml-5">
+            <div className="tf-flex tf-min-h-screen tf-bg-gray-50">
                 <Sidebar user={user} />
                 <main className="tf-flex-1 tf-p-6 tf-overflow-auto">
                     <Routes>
