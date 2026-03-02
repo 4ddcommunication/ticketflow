@@ -77,13 +77,15 @@ class EmailManager
      */
     private function wrap_layout(string $subject, string $content): string
     {
-        $accent_color = $this->settings['portal_accent_color'] ?? '#4f46e5';
-        $company_name = $this->settings['company_name'] ?? get_bloginfo('name');
-        $year         = gmdate('Y');
+        $accent_color    = $this->settings['portal_accent_color'] ?? '#4f46e5';
+        $company_name    = $this->settings['company_name'] ?? get_bloginfo('name');
+        $year            = gmdate('Y');
+        $all_rights      = esc_html__('All rights reserved.', 'ticketflow');
+        $locale          = get_locale();
 
         return <<<HTML
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{$locale}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -105,7 +107,7 @@ class EmailManager
 </tr>
 <tr>
 <td style="padding:16px 32px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
-<p style="margin:0;font-size:12px;color:#9ca3af;">&copy; {$year} {$company_name}. All rights reserved.</p>
+<p style="margin:0;font-size:12px;color:#9ca3af;">&copy; {$year} {$company_name}. {$all_rights}</p>
 </td>
 </tr>
 </table>
