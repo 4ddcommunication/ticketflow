@@ -8,6 +8,7 @@ import { PriorityBadge } from '@shared/components/PriorityBadge';
 import { Avatar } from '@shared/components/Avatar';
 import { ReplyComposer } from '../components/ReplyComposer';
 import { ActivityTimeline } from '../components/ActivityTimeline';
+import { t } from '@shared/i18n';
 
 export function TicketDetail() {
     const { id } = useParams<{ id: string }>();
@@ -66,13 +67,13 @@ export function TicketDetail() {
     }
 
     if (!ticket) {
-        return <div className="tf-text-center tf-py-12 tf-text-gray-500">Ticket not found.</div>;
+        return <div className="tf-text-center tf-py-12 tf-text-gray-500">{t('Ticket not found.')}</div>;
     }
 
     return (
         <div className="tf-max-w-6xl">
             <button onClick={() => navigate('/tickets')} className="tf-text-sm tf-text-gray-500 hover:tf-text-gray-700 tf-mb-4">
-                &larr; Back to tickets
+                &larr; {t('Back to tickets')}
             </button>
 
             <div className="tf-flex tf-gap-6">
@@ -102,8 +103,8 @@ export function TicketDetail() {
                             >
                                 <div className="tf-flex tf-items-center tf-gap-2 tf-mb-2">
                                     {reply.author && <Avatar name={reply.author.name} size="sm" />}
-                                    <span className="tf-text-sm tf-font-medium">{reply.author?.name || 'System'}</span>
-                                    {reply.is_internal && <span className="tf-text-xs tf-bg-yellow-200 tf-text-yellow-800 tf-px-2 tf-py-0.5 tf-rounded">Internal</span>}
+                                    <span className="tf-text-sm tf-font-medium">{reply.author?.name || t('System')}</span>
+                                    {reply.is_internal && <span className="tf-text-xs tf-bg-yellow-200 tf-text-yellow-800 tf-px-2 tf-py-0.5 tf-rounded">{t('Internal')}</span>}
                                     <span className="tf-text-xs tf-text-gray-400 tf-ml-auto">{new Date(reply.created_at).toLocaleString()}</span>
                                 </div>
                                 <div className="tf-prose tf-prose-sm tf-max-w-none" dangerouslySetInnerHTML={{ __html: reply.body }} />
@@ -136,42 +137,42 @@ export function TicketDetail() {
                 <div className="tf-w-64 tf-shrink-0 tf-space-y-4">
                     <div className="tf-bg-white tf-rounded-lg tf-shadow-sm tf-border tf-border-gray-200 tf-p-4 tf-space-y-4">
                         <div>
-                            <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Status</label>
+                            <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Status')}</label>
                             <select
                                 value={ticket.status}
                                 onChange={(e) => handleStatusChange(e.target.value as TicketStatus)}
                                 className="tf-mt-1 tf-w-full tf-text-sm tf-border tf-border-gray-300 tf-rounded tf-px-2 tf-py-1.5"
                             >
-                                <option value="open">Open</option>
-                                <option value="in_progress">In Progress</option>
-                                <option value="waiting">Waiting</option>
-                                <option value="resolved">Resolved</option>
-                                <option value="closed">Closed</option>
+                                <option value="open">{t('Open')}</option>
+                                <option value="in_progress">{t('In Progress')}</option>
+                                <option value="waiting">{t('Waiting')}</option>
+                                <option value="resolved">{t('Resolved')}</option>
+                                <option value="closed">{t('Closed')}</option>
                             </select>
                         </div>
 
                         <div>
-                            <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Priority</label>
+                            <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Priority')}</label>
                             <select
                                 value={ticket.priority}
                                 onChange={(e) => handlePriorityChange(e.target.value as TicketPriority)}
                                 className="tf-mt-1 tf-w-full tf-text-sm tf-border tf-border-gray-300 tf-rounded tf-px-2 tf-py-1.5"
                             >
-                                <option value="low">Low</option>
-                                <option value="normal">Normal</option>
-                                <option value="high">High</option>
-                                <option value="urgent">Urgent</option>
+                                <option value="low">{t('Low')}</option>
+                                <option value="normal">{t('Normal')}</option>
+                                <option value="high">{t('High')}</option>
+                                <option value="urgent">{t('Urgent')}</option>
                             </select>
                         </div>
 
                         <div>
-                            <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Assigned To</label>
+                            <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Assigned To')}</label>
                             <select
                                 value={ticket.agent?.id || ''}
                                 onChange={(e) => handleAssign(parseInt(e.target.value))}
                                 className="tf-mt-1 tf-w-full tf-text-sm tf-border tf-border-gray-300 tf-rounded tf-px-2 tf-py-1.5"
                             >
-                                <option value="">Unassigned</option>
+                                <option value="">{t('Unassigned')}</option>
                                 {agents.map((a) => (
                                     <option key={a.id} value={a.id}>{a.name}</option>
                                 ))}
@@ -181,26 +182,26 @@ export function TicketDetail() {
                         <hr className="tf-border-gray-200" />
 
                         <div>
-                            <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Client</label>
+                            <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Client')}</label>
                             <p className="tf-text-sm tf-text-gray-900 tf-mt-1">{ticket.client?.name || '-'}</p>
                             {ticket.client?.email && <p className="tf-text-xs tf-text-gray-500">{ticket.client.email}</p>}
                         </div>
 
                         {ticket.category && (
                             <div>
-                                <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Category</label>
+                                <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Category')}</label>
                                 <p className="tf-text-sm tf-text-gray-900 tf-mt-1">{ticket.category}</p>
                             </div>
                         )}
 
                         <div>
-                            <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Created</label>
+                            <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Created')}</label>
                             <p className="tf-text-sm tf-text-gray-900 tf-mt-1">{new Date(ticket.created_at).toLocaleString()}</p>
                         </div>
 
                         {ticket.sla_deadline && (
                             <div>
-                                <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">SLA Deadline</label>
+                                <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('SLA Deadline')}</label>
                                 <p className="tf-text-sm tf-text-gray-900 tf-mt-1">{new Date(ticket.sla_deadline).toLocaleString()}</p>
                             </div>
                         )}
@@ -208,7 +209,7 @@ export function TicketDetail() {
 
                     {/* Activity log */}
                     <div className="tf-bg-white tf-rounded-lg tf-shadow-sm tf-border tf-border-gray-200 tf-p-4">
-                        <h3 className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase tf-mb-3">Activity</h3>
+                        <h3 className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase tf-mb-3">{t('Activity')}</h3>
                         <ActivityTimeline activity={activity} />
                     </div>
                 </div>

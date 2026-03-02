@@ -67,34 +67,34 @@ class Admin
         <div class="tf-admin-wrap">
             <div class="tf-admin-header">
                 <h1>Ticketflow</h1>
-                <p>Support ticket system for <?php echo $company; ?>. Manage client tickets, track SLA, and collaborate with your team.</p>
-                <a href="<?php echo esc_url($dashboard_url); ?>" class="tf-launch-btn">Launch Dashboard &rarr;</a>
-                <a href="<?php echo esc_url($portal_url); ?>" class="tf-portal-link" target="_blank">View Client Portal &nearr;</a>
+                <p><?php printf(esc_html__('Support ticket system for %s. Manage client tickets, track SLA, and collaborate with your team.', 'ticketflow'), $company); ?></p>
+                <a href="<?php echo esc_url($dashboard_url); ?>" class="tf-launch-btn"><?php esc_html_e('Launch Dashboard', 'ticketflow'); ?> &rarr;</a>
+                <a href="<?php echo esc_url($portal_url); ?>" class="tf-portal-link" target="_blank"><?php esc_html_e('View Client Portal', 'ticketflow'); ?> &nearr;</a>
             </div>
 
             <div class="tf-cards">
                 <div class="tf-card">
-                    <div class="tf-card-label">Total Tickets</div>
+                    <div class="tf-card-label"><?php esc_html_e('Total Tickets', 'ticketflow'); ?></div>
                     <div class="tf-card-value"><?php echo (int) $stats['total']; ?></div>
                 </div>
                 <div class="tf-card">
-                    <div class="tf-card-label">Open</div>
+                    <div class="tf-card-label"><?php esc_html_e('Open', 'ticketflow'); ?></div>
                     <div class="tf-card-value"><?php echo (int) $stats['open']; ?></div>
                 </div>
                 <div class="tf-card">
-                    <div class="tf-card-label">Unassigned</div>
+                    <div class="tf-card-label"><?php esc_html_e('Unassigned', 'ticketflow'); ?></div>
                     <div class="tf-card-value"><?php echo (int) $stats['unassigned']; ?></div>
                 </div>
             </div>
 
             <div class="tf-guide">
-                <h2>Getting Started</h2>
+                <h2><?php esc_html_e('Getting Started', 'ticketflow'); ?></h2>
                 <ol class="tf-guide-steps">
-                    <li>Add clients via the Dashboard under <strong>Clients</strong>, or create WordPress users with the <code>subscriber</code> or <code>ticketflow_client</code> role.</li>
-                    <li>Clients log in through the <strong>Client Portal</strong> using a magic link sent to their email — no password needed.</li>
-                    <li>Assign staff the <code>ticketflow_agent</code> or <code>ticketflow_admin</code> role in <strong>Users &rarr; Edit User</strong> to give them dashboard access.</li>
-                    <li>Configure categories, SLA deadlines, email settings, and branding in <strong>Dashboard &rarr; Settings</strong>.</li>
-                    <li>Tickets flow through statuses: <strong>Open</strong> &rarr; <strong>In Progress</strong> &rarr; <strong>Waiting</strong> &rarr; <strong>Resolved</strong> &rarr; <strong>Closed</strong>. Resolved tickets auto-close after the configured idle period.</li>
+                    <li><?php printf(__('Add clients via the Dashboard under %1$sClients%2$s, or create WordPress users with the %3$ssubscriber%4$s or %3$sticketflow_client%4$s role.', 'ticketflow'), '<strong>', '</strong>', '<code>', '</code>'); ?></li>
+                    <li><?php printf(__('Clients log in through the %1$sClient Portal%2$s using a magic link sent to their email — no password needed.', 'ticketflow'), '<strong>', '</strong>'); ?></li>
+                    <li><?php printf(__('Assign staff the %1$sticketflow_agent%2$s or %1$sticketflow_admin%2$s role in %3$sUsers &rarr; Edit User%4$s to give them dashboard access.', 'ticketflow'), '<code>', '</code>', '<strong>', '</strong>'); ?></li>
+                    <li><?php printf(__('Configure categories, SLA deadlines, email settings, and branding in %1$sDashboard &rarr; Settings%2$s.', 'ticketflow'), '<strong>', '</strong>'); ?></li>
+                    <li><?php printf(__('Tickets flow through statuses: %1$sOpen%2$s &rarr; %1$sIn Progress%2$s &rarr; %1$sWaiting%2$s &rarr; %1$sResolved%2$s &rarr; %1$sClosed%2$s. Resolved tickets auto-close after the configured idle period.', 'ticketflow'), '<strong>', '</strong>'); ?></li>
                 </ol>
             </div>
         </div>

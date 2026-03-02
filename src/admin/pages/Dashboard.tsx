@@ -4,6 +4,7 @@ import { dashboardApi, ticketsApi } from '@shared/api/endpoints';
 import type { DashboardStats, Ticket } from '@shared/api/types';
 import { StatusBadge } from '@shared/components/StatusBadge';
 import { PriorityBadge } from '@shared/components/PriorityBadge';
+import { t } from '@shared/i18n';
 
 export function Dashboard() {
     const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -26,21 +27,21 @@ export function Dashboard() {
 
     return (
         <div>
-            <h2 className="tf-text-sm tf-font-semibold tf-uppercase tf-tracking-wide tf-text-gray-500 tf-mb-6">Dashboard</h2>
+            <h2 className="tf-text-sm tf-font-semibold tf-uppercase tf-tracking-wide tf-text-gray-500 tf-mb-6">{t('Dashboard')}</h2>
 
             {stats && (
                 <div className="tf-grid tf-grid-cols-2 lg:tf-grid-cols-4 tf-gap-4 tf-mb-8">
-                    <StatCard label="Total Tickets" value={stats.total} />
-                    <StatCard label="Open" value={stats.open} color="blue" />
-                    {stats.my_open !== undefined && <StatCard label="My Queue" value={stats.my_open} color="purple" />}
-                    {stats.unassigned !== undefined && <StatCard label="Unassigned" value={stats.unassigned} color="orange" />}
+                    <StatCard label={t('Total Tickets')} value={stats.total} />
+                    <StatCard label={t('Open')} value={stats.open} color="blue" />
+                    {stats.my_open !== undefined && <StatCard label={t('My Queue')} value={stats.my_open} color="purple" />}
+                    {stats.unassigned !== undefined && <StatCard label={t('Unassigned')} value={stats.unassigned} color="orange" />}
                 </div>
             )}
 
             <div className="tf-bg-white tf-rounded-lg tf-shadow-sm tf-border tf-border-gray-200">
                 <div className="tf-px-4 tf-py-3 tf-border-b tf-border-gray-200 tf-flex tf-justify-between tf-items-center">
-                    <h3 className="tf-font-semibold tf-text-gray-900">Recent Tickets</h3>
-                    <Link to="/tickets" className="tf-text-sm tf-text-primary-600 hover:tf-text-primary-700">View all</Link>
+                    <h3 className="tf-font-semibold tf-text-gray-900">{t('Recent Tickets')}</h3>
+                    <Link to="/tickets" className="tf-text-sm tf-text-primary-600 hover:tf-text-primary-700">{t('View all')}</Link>
                 </div>
                 <div className="tf-divide-y tf-divide-gray-100">
                     {recent.map((ticket) => (
@@ -60,7 +61,7 @@ export function Dashboard() {
                         </Link>
                     ))}
                     {recent.length === 0 && (
-                        <p className="tf-px-4 tf-py-8 tf-text-center tf-text-gray-500">No tickets yet.</p>
+                        <p className="tf-px-4 tf-py-8 tf-text-center tf-text-gray-500">{t('No tickets yet.')}</p>
                     )}
                 </div>
             </div>

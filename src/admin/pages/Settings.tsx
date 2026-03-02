@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { settingsApi } from '@shared/api/endpoints';
 import type { Settings } from '@shared/api/types';
+import { t } from '@shared/i18n';
 
 export function SettingsPage() {
     const [settings, setSettings] = useState<Settings | null>(null);
@@ -37,11 +38,11 @@ export function SettingsPage() {
 
     return (
         <div className="tf-max-w-4xl">
-            <h2 className="tf-text-sm tf-font-semibold tf-uppercase tf-tracking-wide tf-text-gray-500 tf-mb-6">Settings</h2>
+            <h2 className="tf-text-sm tf-font-semibold tf-uppercase tf-tracking-wide tf-text-gray-500 tf-mb-6">{t('Settings')}</h2>
 
             <div className="tf-bg-white tf-rounded-lg tf-shadow-sm tf-border tf-border-gray-200 tf-divide-y tf-divide-gray-200">
-                <Section title="General">
-                    <Field label="Company Name">
+                <Section title={t('General')}>
+                    <Field label={t('Company Name')}>
                         <input
                             type="text"
                             value={settings.company_name}
@@ -49,7 +50,7 @@ export function SettingsPage() {
                             className="tf-input"
                         />
                     </Field>
-                    <Field label="Portal Accent Color" hint="Applies to the client portal header and email template branding">
+                    <Field label={t('Portal Accent Color')} hint={t('Accent color hint')}>
                         <div className="tf-flex tf-items-center tf-gap-2">
                             <input
                                 type="color"
@@ -67,11 +68,11 @@ export function SettingsPage() {
                     </Field>
                 </Section>
 
-                <Section title="Ticket Categories">
+                <Section title={t('Ticket Categories')}>
                     <p className="tf-text-sm tf-text-gray-500 tf-mb-3">
-                        When a client creates a new ticket, they must select one of these categories. This helps your team triage and route tickets faster. Separate each category with a comma.
+                        {t('Categories description')}
                     </p>
-                    <Field label="Categories">
+                    <Field label={t('Categories')}>
                         <input
                             type="text"
                             value={settings.categories.join(', ')}
@@ -80,16 +81,16 @@ export function SettingsPage() {
                         />
                     </Field>
                     <p className="tf-text-xs tf-text-gray-400">
-                        Example: Billing, Technical Support, Account, General Inquiry
+                        {t('Categories example')}
                     </p>
                 </Section>
 
-                <Section title="Service Level Agreement (SLA)">
+                <Section title={t('Service Level Agreement (SLA)')}>
                     <p className="tf-text-sm tf-text-gray-500 tf-mb-3">
-                        SLA defines the maximum time your team has to respond to and resolve tickets. Breached deadlines are flagged in the ticket list. Auto-close removes resolved tickets that have had no activity for the configured number of days.
+                        {t('SLA description')}
                     </p>
                     <div className="tf-grid tf-grid-cols-3 tf-gap-4">
-                        <Field label="Response Time (hours)">
+                        <Field label={t('Response Time (hours)')}>
                             <input
                                 type="number"
                                 value={settings.sla_response_hours}
@@ -97,7 +98,7 @@ export function SettingsPage() {
                                 className="tf-input"
                             />
                         </Field>
-                        <Field label="Resolve Time (hours)">
+                        <Field label={t('Resolve Time (hours)')}>
                             <input
                                 type="number"
                                 value={settings.sla_resolve_hours}
@@ -105,7 +106,7 @@ export function SettingsPage() {
                                 className="tf-input"
                             />
                         </Field>
-                        <Field label="Auto-close after (days)">
+                        <Field label={t('Auto-close after (days)')}>
                             <input
                                 type="number"
                                 value={settings.auto_close_days}
@@ -116,8 +117,8 @@ export function SettingsPage() {
                     </div>
                 </Section>
 
-                <Section title="Email">
-                    <Field label="From Name">
+                <Section title={t('Email')}>
+                    <Field label={t('From Name')}>
                         <input
                             type="text"
                             value={settings.email_from_name}
@@ -125,7 +126,7 @@ export function SettingsPage() {
                             className="tf-input"
                         />
                     </Field>
-                    <Field label="From Email">
+                    <Field label={t('From Email')}>
                         <input
                             type="email"
                             value={settings.email_from_address}
@@ -140,12 +141,12 @@ export function SettingsPage() {
                             onChange={(e) => update('email_notifications', e.target.checked)}
                             className="tf-rounded tf-border-gray-300"
                         />
-                        <span className="tf-text-sm tf-text-gray-700">Enable email notifications</span>
+                        <span className="tf-text-sm tf-text-gray-700">{t('Enable email notifications')}</span>
                     </label>
                 </Section>
 
-                <Section title="Files">
-                    <Field label="Max File Size (MB)">
+                <Section title={t('Files')}>
+                    <Field label={t('Max File Size (MB)')}>
                         <input
                             type="number"
                             value={settings.max_file_size_mb}
@@ -153,7 +154,7 @@ export function SettingsPage() {
                             className="tf-input tf-w-32"
                         />
                     </Field>
-                    <Field label="Allowed File Types (comma-separated)">
+                    <Field label={t('Allowed File Types (comma-separated)')}>
                         <input
                             type="text"
                             value={settings.allowed_file_types.join(', ')}
@@ -170,9 +171,9 @@ export function SettingsPage() {
                     disabled={saving}
                     className="tf-bg-primary-600 tf-text-white tf-px-6 tf-py-2 tf-rounded-lg tf-text-sm tf-font-medium hover:tf-bg-primary-700 disabled:tf-opacity-50"
                 >
-                    {saving ? 'Saving...' : 'Save Settings'}
+                    {saving ? t('Saving...') : t('Save Settings')}
                 </button>
-                {saved && <span className="tf-text-sm tf-text-green-600">Settings saved!</span>}
+                {saved && <span className="tf-text-sm tf-text-green-600">{t('Settings saved!')}</span>}
             </div>
         </div>
     );

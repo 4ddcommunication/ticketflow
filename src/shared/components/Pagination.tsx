@@ -1,3 +1,5 @@
+import { t } from '@shared/i18n';
+
 interface Props {
     page: number;
     pages: number;
@@ -23,7 +25,7 @@ export function Pagination({ page, pages, total, onPageChange }: Props) {
     return (
         <div className="tf-flex tf-items-center tf-justify-between tf-px-4 tf-py-3">
             <span className="tf-text-sm tf-text-gray-500">
-                {total} result{total !== 1 ? 's' : ''}
+                {total !== 1 ? t('{count} results', { count: total }) : t('{count} result', { count: total })}
             </span>
             <div className="tf-flex tf-gap-1">
                 <button
@@ -31,7 +33,7 @@ export function Pagination({ page, pages, total, onPageChange }: Props) {
                     disabled={page <= 1}
                     className="tf-px-3 tf-py-1 tf-text-sm tf-rounded tf-border tf-border-gray-300 disabled:tf-opacity-50 hover:tf-bg-gray-50"
                 >
-                    Prev
+                    {t('Prev')}
                 </button>
                 {range().map((item, i) =>
                     item === '...' ? (
@@ -55,7 +57,7 @@ export function Pagination({ page, pages, total, onPageChange }: Props) {
                     disabled={page >= pages}
                     className="tf-px-3 tf-py-1 tf-text-sm tf-rounded tf-border tf-border-gray-300 disabled:tf-opacity-50 hover:tf-bg-gray-50"
                 >
-                    Next
+                    {t('Next')}
                 </button>
             </div>
         </div>

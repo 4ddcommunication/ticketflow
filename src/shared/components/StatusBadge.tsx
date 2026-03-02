@@ -1,4 +1,5 @@
 import type { TicketStatus } from '../api/types';
+import { t } from '@shared/i18n';
 
 const statusConfig: Record<TicketStatus, { label: string; classes: string }> = {
     open: { label: 'Open', classes: 'tf-bg-blue-100 tf-text-blue-800' },
@@ -16,7 +17,7 @@ export function StatusBadge({ status }: Props) {
     const config = statusConfig[status] || statusConfig.open;
     return (
         <span className={`tf-inline-flex tf-items-center tf-px-2.5 tf-py-0.5 tf-rounded-full tf-text-xs tf-font-medium ${config.classes}`}>
-            {config.label}
+            {t(config.label)}
         </span>
     );
 }

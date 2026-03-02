@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ticketsApi, attachmentsApi, settingsApi } from '@shared/api/endpoints';
+import { t } from '@shared/i18n';
 
 const ALLOWED_TYPES = [
     'image/jpeg', 'image/png', 'image/gif',
@@ -37,11 +38,11 @@ export function NewTicket({ accentColor }: Props) {
         const valid: File[] = [];
         for (const file of Array.from(newFiles)) {
             if (!ALLOWED_TYPES.includes(file.type)) {
-                setError(`"${file.name}" is not an allowed file type.`);
+                setError(t('"{name}" is not an allowed file type.', { name: file.name }));
                 return;
             }
             if (file.size > MAX_FILE_SIZE) {
-                setError(`"${file.name}" exceeds the 10MB limit.`);
+                setError(t('"{name}" exceeds the 10MB limit.', { name: file.name }));
                 return;
             }
             valid.push(file);
@@ -75,14 +76,14 @@ export function NewTicket({ accentColor }: Props) {
             // Upload attachments
             if (files.length > 0) {
                 for (let i = 0; i < files.length; i++) {
-                    setUploadProgress(`Uploading file ${i + 1} of ${files.length}...`);
+                    setUploadProgress(t('Uploading file {current} of {total}...', { current: i + 1, total: files.length }));
                     await attachmentsApi.upload(ticket.id, files[i]);
                 }
             }
 
             navigate(`/tickets/${ticket.id}`);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to create ticket');
+            setError(err instanceof Error ? err.message : t('Failed to create ticket'));
         } finally {
             setSubmitting(false);
             setUploadProgress('');
@@ -92,68 +93,68 @@ export function NewTicket({ accentColor }: Props) {
     return (
         <div>
             <button onClick={() => navigate('/')} className="tf-text-sm tf-text-gray-500 hover:tf-text-gray-700 tf-mb-4">
-                &larr; Back to tickets
+                &larr; {t('Back to tickets')}
             </button>
 
-            <h2 className="tf-text-xl tf-font-bold tf-text-gray-900 tf-mb-6">New Ticket</h2>
+            <h2 className="tf-text-xl tf-font-bold tf-text-gray-900 tf-mb-6">{t('New Ticket')}</h2>
 
             <form onSubmit={handleSubmit} className="tf-bg-white tf-rounded-lg tf-border tf-border-gray-200 tf-p-6 tf-space-y-4">
                 <div>
-                    <label className="tf-block tf-text-sm tf-font-medium tf-text-gray-700 tf-mb-1">Subject</label>
+                    <label className="tf-block tf-text-sm tf-font-medium tf-text-gray-700 tf-mb-1">{t('Subject')}</label>
                     <input
                         type="text"
                         value={subject}
                         onChange={(e) => setSubject(e.target.value)}
                         required
                         className="tf-w-full tf-px-3 tf-py-2 tf-border tf-border-gray-300 tf-rounded-lg tf-text-sm focus:tf-ring-2 focus:tf-outline-none"
-                        placeholder="Brief summary of your issue"
+                        placeholder={t('Brief summary of your issue')}
                     />
                 </div>
 
                 <div className="tf-grid tf-grid-cols-2 tf-gap-4">
                     {categories.length > 0 && (
                         <div>
-                            <label className="tf-block tf-text-sm tf-font-medium tf-text-gray-700 tf-mb-1">Category</label>
+                            <label className="tf-block tf-text-sm tf-font-medium tf-text-gray-700 tf-mb-1">{t('Category')}</label>
                             <select
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
                                 className="tf-w-full tf-px-3 tf-py-2 tf-border tf-border-gray-300 tf-rounded-lg tf-text-sm"
                             >
-                                <option value="">Select...</option>
+                                <option value="">{t('Select...')}</option>
                                 {categories.map((c) => <option key={c} value={c}>{c}</option>)}
                             </select>
                         </div>
                     )}
                     <div>
-                        <label className="tf-block tf-text-sm tf-font-medium tf-text-gray-700 tf-mb-1">Priority</label>
+                        <label className="tf-block tf-text-sm tf-font-medium tf-text-gray-700 tf-mb-1">{t('Priority')}</label>
                         <select
                             value={priority}
                             onChange={(e) => setPriority(e.target.value)}
                             className="tf-w-full tf-px-3 tf-py-2 tf-border tf-border-gray-300 tf-rounded-lg tf-text-sm"
                         >
-                            <option value="low">Low</option>
-                            <option value="normal">Normal</option>
-                            <option value="high">High</option>
-                            <option value="urgent">Urgent</option>
+                            <option value="low">{t('Low')}</option>
+                            <option value="normal">{t('Normal')}</option>
+                            <option value="high">{t('High')}</option>
+                            <option value="urgent">{t('Urgent')}</option>
                         </select>
                     </div>
                 </div>
 
                 <div>
-                    <label className="tf-block tf-text-sm tf-font-medium tf-text-gray-700 tf-mb-1">Description</label>
+                    <label className="tf-block tf-text-sm tf-font-medium tf-text-gray-700 tf-mb-1">{t('Description')}</label>
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         required
                         rows={6}
                         className="tf-w-full tf-px-3 tf-py-2 tf-border tf-border-gray-300 tf-rounded-lg tf-text-sm tf-resize-y focus:tf-ring-2 focus:tf-outline-none"
-                        placeholder="Describe your issue in detail..."
+                        placeholder={t('Describe your issue in detail...')}
                     />
                 </div>
 
                 {/* File attachments */}
                 <div>
-                    <label className="tf-block tf-text-sm tf-font-medium tf-text-gray-700 tf-mb-1">Attachments</label>
+                    <label className="tf-block tf-text-sm tf-font-medium tf-text-gray-700 tf-mb-1">{t('Attachments')}</label>
                     <input
                         ref={fileInputRef}
                         type="file"
@@ -170,8 +171,8 @@ export function NewTicket({ accentColor }: Props) {
                         <svg className="tf-w-4 tf-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                         </svg>
-                        Attach files
-                        <span className="tf-text-xs tf-text-gray-400">(PNG, JPEG, PDF, up to 10MB)</span>
+                        {t('Attach files')}
+                        <span className="tf-text-xs tf-text-gray-400">{t('(PNG, JPEG, PDF, up to 10MB)')}</span>
                     </button>
 
                     {files.length > 0 && (
@@ -198,7 +199,7 @@ export function NewTicket({ accentColor }: Props) {
                     className="tf-py-2 tf-px-6 tf-rounded-lg tf-text-sm tf-font-medium tf-text-white disabled:tf-opacity-50"
                     style={{ backgroundColor: accentColor }}
                 >
-                    {submitting ? (uploadProgress || 'Submitting...') : 'Submit Ticket'}
+                    {submitting ? (uploadProgress || t('Submitting...')) : t('Submit Ticket')}
                 </button>
             </form>
         </div>

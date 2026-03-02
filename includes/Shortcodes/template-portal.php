@@ -15,6 +15,7 @@ $config = [
     'accentColor' => $accent,
     'companyName' => $company,
     'error'       => $error,
+    'locale'      => get_locale(),
 ];
 ?>
 <!DOCTYPE html>

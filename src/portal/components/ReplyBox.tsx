@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FileUploader } from '@shared/components/FileUploader';
+import { t } from '@shared/i18n';
 
 interface Props {
     onSubmit: (body: string) => Promise<void>;
@@ -28,7 +29,7 @@ export function ReplyBox({ onSubmit, onUpload, accentColor }: Props) {
             <textarea
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
-                placeholder="Write a reply..."
+                placeholder={t('Write a reply...')}
                 rows={4}
                 className="tf-w-full tf-text-sm tf-border tf-border-gray-300 tf-rounded-lg tf-p-3 tf-resize-y focus:tf-ring-2 focus:tf-outline-none"
             />
@@ -40,7 +41,7 @@ export function ReplyBox({ onSubmit, onUpload, accentColor }: Props) {
                     className="tf-px-4 tf-py-2 tf-rounded-lg tf-text-sm tf-font-medium tf-text-white disabled:tf-opacity-50"
                     style={{ backgroundColor: accentColor }}
                 >
-                    {submitting ? 'Sending...' : 'Reply'}
+                    {submitting ? t('Sending...') : t('Reply')}
                 </button>
             </div>
         </form>

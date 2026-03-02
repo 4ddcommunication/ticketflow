@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FileUploader } from '@shared/components/FileUploader';
+import { t } from '@shared/i18n';
 
 interface Props {
     onSubmit: (body: string, isInternal: boolean) => Promise<void>;
@@ -30,7 +31,7 @@ export function ReplyComposer({ onSubmit, onUpload }: Props) {
             <textarea
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
-                placeholder={isInternal ? 'Add internal note...' : 'Write a reply...'}
+                placeholder={isInternal ? t('Add internal note...') : t('Write a reply...')}
                 rows={4}
                 className={`tf-w-full tf-text-sm tf-border tf-rounded-lg tf-p-3 tf-resize-y focus:tf-ring-2 focus:tf-outline-none ${
                     isInternal
@@ -48,7 +49,7 @@ export function ReplyComposer({ onSubmit, onUpload }: Props) {
                             onChange={(e) => setIsInternal(e.target.checked)}
                             className="tf-rounded tf-border-gray-300 tf-text-yellow-500 focus:tf-ring-yellow-500"
                         />
-                        <span className="tf-text-sm tf-text-gray-600">Internal note</span>
+                        <span className="tf-text-sm tf-text-gray-600">{t('Internal note')}</span>
                     </label>
                     <FileUploader onUpload={onUpload} />
                 </div>
@@ -62,7 +63,7 @@ export function ReplyComposer({ onSubmit, onUpload }: Props) {
                             : 'tf-bg-primary-600 hover:tf-bg-primary-700'
                     }`}
                 >
-                    {submitting ? 'Sending...' : isInternal ? 'Add Note' : 'Reply'}
+                    {submitting ? t('Sending...') : isInternal ? t('Add Note') : t('Reply')}
                 </button>
             </div>
         </form>

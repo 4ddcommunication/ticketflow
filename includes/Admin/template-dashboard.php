@@ -34,7 +34,8 @@ $company     = esc_attr($settings['company_name'] ?? get_bloginfo('name'));
             companyName: <?php echo wp_json_encode($company); ?>,
             accentColor: <?php echo wp_json_encode($accent); ?>,
             logoutNonce: <?php echo wp_json_encode(wp_create_nonce('log-out')); ?>,
-            logoutUrl: <?php echo wp_json_encode(wp_logout_url(home_url())); ?>
+            logoutUrl: <?php echo wp_json_encode(wp_logout_url(home_url())); ?>,
+            locale: <?php echo wp_json_encode(get_locale()); ?>
         };
     </script>
     <script type="module" src="<?php echo esc_url($base_url . 'styles/chunks/' . $shared_chunk . '?ver=' . TICKETFLOW_VERSION); ?>"></script>

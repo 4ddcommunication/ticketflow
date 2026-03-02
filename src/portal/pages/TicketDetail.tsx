@@ -8,6 +8,7 @@ import { PriorityBadge } from '@shared/components/PriorityBadge';
 import { Avatar } from '@shared/components/Avatar';
 import { FileUploader } from '@shared/components/FileUploader';
 import { ReplyBox } from '../components/ReplyBox';
+import { t } from '@shared/i18n';
 
 interface Props {
     accentColor: string;
@@ -42,13 +43,13 @@ export function TicketDetail({ accentColor }: Props) {
     }
 
     if (!ticket) {
-        return <div className="tf-text-center tf-py-12 tf-text-gray-500">Ticket not found.</div>;
+        return <div className="tf-text-center tf-py-12 tf-text-gray-500">{t('Ticket not found.')}</div>;
     }
 
     return (
         <div>
             <button onClick={() => navigate('/')} className="tf-text-sm tf-text-gray-500 hover:tf-text-gray-700 tf-mb-4">
-                &larr; Back to tickets
+                &larr; {t('Back to tickets')}
             </button>
 
             <div className="tf-bg-white tf-rounded-lg tf-border tf-border-gray-200 tf-mb-4">
@@ -72,9 +73,9 @@ export function TicketDetail({ accentColor }: Props) {
                     <div key={reply.id} className="tf-bg-white tf-rounded-lg tf-border tf-border-gray-200 tf-p-4">
                         <div className="tf-flex tf-items-center tf-gap-2 tf-mb-2">
                             {reply.author && <Avatar name={reply.author.name} size="sm" />}
-                            <span className="tf-text-sm tf-font-medium">{reply.author?.name || 'Support'}</span>
+                            <span className="tf-text-sm tf-font-medium">{reply.author?.name || t('Support')}</span>
                             {reply.author?.role !== 'client' && (
-                                <span className="tf-text-xs tf-bg-primary-100 tf-text-primary-700 tf-px-1.5 tf-py-0.5 tf-rounded">Staff</span>
+                                <span className="tf-text-xs tf-bg-primary-100 tf-text-primary-700 tf-px-1.5 tf-py-0.5 tf-rounded">{t('Staff')}</span>
                             )}
                             <span className="tf-text-xs tf-text-gray-400 tf-ml-auto">{new Date(reply.created_at).toLocaleString()}</span>
                         </div>

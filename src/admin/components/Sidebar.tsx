@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import type { User } from '@shared/api/types';
+import { t } from '@shared/i18n';
 
 interface Props {
     user: User;
@@ -38,7 +39,7 @@ export function Sidebar({ user }: Props) {
                             <svg className="tf-w-5 tf-h-5 tf-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
                             </svg>
-                            {item.label}
+                            {t(item.label)}
                         </NavLink>
                     ))}
             </nav>
@@ -60,7 +61,7 @@ export function Sidebar({ user }: Props) {
                     <svg className="tf-w-3 tf-h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
-                    Logout
+                    {t('Logout')}
                 </a>
             </div>
         </aside>

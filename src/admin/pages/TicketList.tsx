@@ -6,6 +6,7 @@ import { PriorityBadge } from '@shared/components/PriorityBadge';
 import { Pagination } from '@shared/components/Pagination';
 import { TicketFilters } from '../components/TicketFilters';
 import { StatusLegend } from '../components/StatusLegend';
+import { t } from '@shared/i18n';
 
 interface Filters {
     status: string;
@@ -31,12 +32,12 @@ export function TicketList() {
     return (
         <div>
             <div className="tf-flex tf-justify-between tf-items-center tf-mb-6">
-                <h2 className="tf-text-sm tf-font-semibold tf-uppercase tf-tracking-wide tf-text-gray-500">Tickets</h2>
+                <h2 className="tf-text-sm tf-font-semibold tf-uppercase tf-tracking-wide tf-text-gray-500">{t('Tickets')}</h2>
                 <Link
                     to="/tickets/new"
                     className="tf-bg-primary-600 tf-text-white tf-px-4 tf-py-2 tf-rounded-lg tf-text-sm tf-font-medium hover:tf-bg-primary-700 tf-transition-colors"
                 >
-                    New Ticket
+                    {t('New Ticket')}
                 </Link>
             </div>
 
@@ -47,18 +48,18 @@ export function TicketList() {
                 {loading ? (
                     <div className="tf-flex tf-justify-center tf-py-12"><div className="tf-animate-spin tf-rounded-full tf-h-8 tf-w-8 tf-border-b-2 tf-border-primary-600"></div></div>
                 ) : tickets.length === 0 ? (
-                    <p className="tf-px-4 tf-py-12 tf-text-center tf-text-gray-500">No tickets found.</p>
+                    <p className="tf-px-4 tf-py-12 tf-text-center tf-text-gray-500">{t('No tickets found.')}</p>
                 ) : (
                     <>
                         <table className="tf-w-full">
                             <thead>
                                 <tr className="tf-bg-gray-50 tf-border-b tf-border-gray-200">
-                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Ticket</th>
-                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Client</th>
-                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Agent</th>
-                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Status</th>
-                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Priority</th>
-                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Updated</th>
+                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Ticket')}</th>
+                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Client')}</th>
+                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Agent')}</th>
+                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Status')}</th>
+                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Priority')}</th>
+                                    <th className="tf-text-left tf-px-4 tf-py-3 tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Updated')}</th>
                                 </tr>
                             </thead>
                             <tbody className="tf-divide-y tf-divide-gray-100">
@@ -71,7 +72,7 @@ export function TicketList() {
                                             </Link>
                                         </td>
                                         <td className="tf-px-4 tf-py-3 tf-text-sm tf-text-gray-600">{ticket.client?.name || '-'}</td>
-                                        <td className="tf-px-4 tf-py-3 tf-text-sm tf-text-gray-600">{ticket.agent?.name || <span className="tf-text-gray-400">Unassigned</span>}</td>
+                                        <td className="tf-px-4 tf-py-3 tf-text-sm tf-text-gray-600">{ticket.agent?.name || <span className="tf-text-gray-400">{t('Unassigned')}</span>}</td>
                                         <td className="tf-px-4 tf-py-3"><StatusBadge status={ticket.status} /></td>
                                         <td className="tf-px-4 tf-py-3"><PriorityBadge priority={ticket.priority} /></td>
                                         <td className="tf-px-4 tf-py-3 tf-text-sm tf-text-gray-500">{new Date(ticket.updated_at).toLocaleDateString()}</td>

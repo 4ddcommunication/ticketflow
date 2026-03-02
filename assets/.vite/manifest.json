@@ -3,8 +3,8 @@
     "file": "styles/styles.css",
     "src": "_styles-!~{001}~.js"
   },
-  "_styles-BiU4wrfX.js": {
-    "file": "styles/chunks/styles-BiU4wrfX.js",
+  "_styles-DlfmicBa.js": {
+    "file": "styles/chunks/styles-DlfmicBa.js",
     "name": "styles",
     "css": [
       "styles/styles.css"
@@ -16,7 +16,7 @@
     "src": "src/admin/main.tsx",
     "isEntry": true,
     "imports": [
-      "_styles-BiU4wrfX.js"
+      "_styles-DlfmicBa.js"
     ]
   },
   "src/portal/main.tsx": {
@@ -25,7 +25,7 @@
     "src": "src/portal/main.tsx",
     "isEntry": true,
     "imports": [
-      "_styles-BiU4wrfX.js"
+      "_styles-DlfmicBa.js"
     ]
   }
 }

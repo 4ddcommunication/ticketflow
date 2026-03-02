@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { t } from '@shared/i18n';
 
 interface Props {
     onUpload: (file: File) => Promise<void>;
@@ -16,7 +17,7 @@ export function FileUploader({ onUpload, accept, maxSizeMb = 10 }: Props) {
         if (!file) return;
 
         if (file.size > maxSizeMb * 1024 * 1024) {
-            setError(`File exceeds ${maxSizeMb}MB limit`);
+            setError(t('File exceeds {size}MB limit', { size: maxSizeMb }));
             return;
         }
 
@@ -25,7 +26,7 @@ export function FileUploader({ onUpload, accept, maxSizeMb = 10 }: Props) {
         try {
             await onUpload(file);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Upload failed');
+            setError(err instanceof Error ? err.message : t('Upload failed'));
         } finally {
             setUploading(false);
             if (inputRef.current) inputRef.current.value = '';
@@ -53,7 +54,7 @@ export function FileUploader({ onUpload, accept, maxSizeMb = 10 }: Props) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                     </svg>
                 )}
-                Attach file
+                {t('Attach file')}
             </label>
             {error && <p className="tf-text-red-600 tf-text-xs tf-mt-1">{error}</p>}
         </div>

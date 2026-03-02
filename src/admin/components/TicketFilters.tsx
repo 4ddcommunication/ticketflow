@@ -1,3 +1,5 @@
+import { t } from '@shared/i18n';
+
 interface Filters {
     status: string;
     priority: string;
@@ -18,7 +20,7 @@ export function TicketFilters({ filters, onChange }: Props) {
         <div className="tf-flex tf-flex-wrap tf-gap-3 tf-mb-4">
             <input
                 type="text"
-                placeholder="Search tickets..."
+                placeholder={t('Search tickets...')}
                 value={filters.search}
                 onChange={(e) => update('search', e.target.value)}
                 className="tf-px-3 tf-py-2 tf-text-sm tf-border tf-border-gray-300 tf-rounded-lg tf-w-64 focus:tf-ring-2 focus:tf-ring-primary-500 focus:tf-border-primary-500 tf-outline-none"
@@ -28,30 +30,30 @@ export function TicketFilters({ filters, onChange }: Props) {
                 onChange={(e) => update('status', e.target.value)}
                 className="tf-px-3 tf-py-2 tf-text-sm tf-border tf-border-gray-300 tf-rounded-lg focus:tf-ring-2 focus:tf-ring-primary-500 tf-outline-none"
             >
-                <option value="">All Statuses</option>
-                <option value="open">Open</option>
-                <option value="in_progress">In Progress</option>
-                <option value="waiting">Waiting</option>
-                <option value="resolved">Resolved</option>
-                <option value="closed">Closed</option>
+                <option value="">{t('All Statuses')}</option>
+                <option value="open">{t('Open')}</option>
+                <option value="in_progress">{t('In Progress')}</option>
+                <option value="waiting">{t('Waiting')}</option>
+                <option value="resolved">{t('Resolved')}</option>
+                <option value="closed">{t('Closed')}</option>
             </select>
             <select
                 value={filters.priority}
                 onChange={(e) => update('priority', e.target.value)}
                 className="tf-px-3 tf-py-2 tf-text-sm tf-border tf-border-gray-300 tf-rounded-lg focus:tf-ring-2 focus:tf-ring-primary-500 tf-outline-none"
             >
-                <option value="">All Priorities</option>
-                <option value="low">Low</option>
-                <option value="normal">Normal</option>
-                <option value="high">High</option>
-                <option value="urgent">Urgent</option>
+                <option value="">{t('All Priorities')}</option>
+                <option value="low">{t('Low')}</option>
+                <option value="normal">{t('Normal')}</option>
+                <option value="high">{t('High')}</option>
+                <option value="urgent">{t('Urgent')}</option>
             </select>
             {(filters.status || filters.priority || filters.search) && (
                 <button
                     onClick={() => onChange({ status: '', priority: '', search: '' })}
                     className="tf-px-3 tf-py-2 tf-text-sm tf-text-gray-500 hover:tf-text-gray-700"
                 >
-                    Clear filters
+                    {t('Clear filters')}
                 </button>
             )}
         </div>

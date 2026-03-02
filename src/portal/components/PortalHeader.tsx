@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { User } from '@shared/api/types';
+import { t } from '@shared/i18n';
 
 interface Props {
     user: User;
@@ -20,7 +21,7 @@ export function PortalHeader({ user, companyName, accentColor, onLogout }: Props
                     onClick={onLogout}
                     className="tf-text-sm tf-text-gray-500 hover:tf-text-gray-700"
                 >
-                    Log out
+                    {t('Log out')}
                 </button>
             </div>
         </header>

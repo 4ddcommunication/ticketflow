@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTickets } from '@shared/hooks/useTickets';
 import { StatusBadge } from '@shared/components/StatusBadge';
 import { PriorityBadge } from '@shared/components/PriorityBadge';
+import { t } from '@shared/i18n';
 
 export function TicketList() {
     const { tickets, loading } = useTickets({ per_page: 50 });
@@ -9,12 +10,12 @@ export function TicketList() {
     return (
         <div>
             <div className="tf-flex tf-justify-between tf-items-center tf-mb-6">
-                <h2 className="tf-text-xl tf-font-bold tf-text-gray-900">My Tickets</h2>
+                <h2 className="tf-text-xl tf-font-bold tf-text-gray-900">{t('My Tickets')}</h2>
                 <Link
                     to="/new"
                     className="tf-bg-primary-600 tf-text-white tf-px-4 tf-py-2 tf-rounded-lg tf-text-sm tf-font-medium hover:tf-bg-primary-700"
                 >
-                    New Ticket
+                    {t('New Ticket')}
                 </Link>
             </div>
 
@@ -24,12 +25,12 @@ export function TicketList() {
                 </div>
             ) : tickets.length === 0 ? (
                 <div className="tf-text-center tf-py-12 tf-bg-white tf-rounded-lg tf-border tf-border-gray-200">
-                    <p className="tf-text-gray-500 tf-mb-4">You haven't submitted any tickets yet.</p>
+                    <p className="tf-text-gray-500 tf-mb-4">{t("You haven't submitted any tickets yet.")}</p>
                     <Link
                         to="/new"
                         className="tf-text-primary-600 hover:tf-text-primary-700 tf-font-medium tf-text-sm"
                     >
-                        Create your first ticket
+                        {t('Create your first ticket')}
                     </Link>
                 </div>
             ) : (
@@ -52,7 +53,7 @@ export function TicketList() {
                                 <div className="tf-text-right tf-shrink-0 tf-ml-4">
                                     <p className="tf-text-xs tf-text-gray-400">{new Date(ticket.updated_at).toLocaleDateString()}</p>
                                     {ticket.reply_count > 0 && (
-                                        <p className="tf-text-xs tf-text-gray-500">{ticket.reply_count} replies</p>
+                                        <p className="tf-text-xs tf-text-gray-500">{t('{count} replies', { count: ticket.reply_count })}</p>
                                     )}
                                 </div>
                             </div>

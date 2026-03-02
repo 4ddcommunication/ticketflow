@@ -1,4 +1,5 @@
 import type { TicketPriority } from '../api/types';
+import { t } from '@shared/i18n';
 
 const priorityConfig: Record<TicketPriority, { label: string; classes: string }> = {
     low: { label: 'Low', classes: 'tf-bg-gray-100 tf-text-gray-700' },
@@ -15,7 +16,7 @@ export function PriorityBadge({ priority }: Props) {
     const config = priorityConfig[priority] || priorityConfig.normal;
     return (
         <span className={`tf-inline-flex tf-items-center tf-px-2 tf-py-0.5 tf-rounded tf-text-xs tf-font-medium ${config.classes}`}>
-            {config.label}
+            {t(config.label)}
         </span>
     );
 }

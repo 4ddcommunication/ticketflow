@@ -1,4 +1,5 @@
 import type { TicketStatus } from '@shared/api/types';
+import { t } from '@shared/i18n';
 
 const legend: { status: TicketStatus; label: string; desc: string }[] = [
     { status: 'open', label: 'Open', desc: 'Not yet picked up' },
@@ -22,9 +23,9 @@ export function StatusLegend() {
             {legend.map((item) => (
                 <div key={item.status} className="tf-flex tf-items-center tf-gap-1.5">
                     <span className={`tf-inline-flex tf-items-center tf-px-2 tf-py-0.5 tf-rounded-full tf-text-xs tf-font-medium ${badgeClasses[item.status]}`}>
-                        {item.label}
+                        {t(item.label)}
                     </span>
-                    <span className="tf-text-xs tf-text-gray-400">{item.desc}</span>
+                    <span className="tf-text-xs tf-text-gray-400">{t(item.desc)}</span>
                 </div>
             ))}
         </div>
