@@ -88,6 +88,13 @@ export function ClientsPage() {
                 </form>
             )}
 
+            <div className="tf-mb-4 tf-flex tf-flex-wrap tf-gap-x-5 tf-gap-y-1 tf-text-xs tf-text-gray-400">
+                <span><strong className="tf-text-gray-500">Add Client</strong> — creates a WP account with <code className="tf-bg-gray-100 tf-px-1 tf-rounded tf-text-gray-600">subscriber</code> or <code className="tf-bg-gray-100 tf-px-1 tf-rounded tf-text-gray-600">ticketflow_client</code> role</span>
+                <span><strong className="tf-text-gray-500">Login</strong> — clients receive a magic link via email, no password needed</span>
+                <span><strong className="tf-text-gray-500">Staff roles</strong> — <code className="tf-bg-gray-100 tf-px-1 tf-rounded tf-text-gray-600">ticketflow_agent</code> or <code className="tf-bg-gray-100 tf-px-1 tf-rounded tf-text-gray-600">ticketflow_admin</code> in WP Users</span>
+                <span><strong className="tf-text-gray-500">Permissions</strong> — clients only see their own tickets, agents and admins see all</span>
+            </div>
+
             <input
                 type="text"
                 placeholder="Search clients..."

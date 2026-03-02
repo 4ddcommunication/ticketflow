@@ -1,12 +1,12 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '@shared/hooks/useAuth';
+import { Avatar } from '@shared/components/Avatar';
 import { Sidebar } from './components/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { TicketList } from './pages/TicketList';
 import { TicketDetail } from './pages/TicketDetail';
 import { SettingsPage } from './pages/Settings';
 import { ClientsPage } from './pages/Clients';
-import { SavedRepliesPage } from './pages/SavedReplies';
 
 export function App() {
     const { user, loading } = useAuth();
@@ -27,17 +27,27 @@ export function App() {
         <HashRouter>
             <div className="tf-flex tf-min-h-screen tf-bg-gray-50">
                 <Sidebar user={user} />
-                <main className="tf-flex-1 tf-p-6 tf-overflow-auto">
-                    <Routes>
-                        <Route path="/" element={<Dashboard />} />
-                        <Route path="/tickets" element={<TicketList />} />
-                        <Route path="/tickets/:id" element={<TicketDetail />} />
-                        <Route path="/clients" element={<ClientsPage />} />
-                        <Route path="/saved-replies" element={<SavedRepliesPage />} />
-                        <Route path="/settings" element={<SettingsPage />} />
-                        <Route path="*" element={<Navigate to="/" replace />} />
-                    </Routes>
-                </main>
+                <div className="tf-flex-1 tf-flex tf-flex-col tf-overflow-auto">
+                    <header className="tf-bg-white tf-border-b tf-border-gray-200 tf-px-6 tf-py-3 tf-flex tf-items-center tf-justify-end">
+                        <div className="tf-flex tf-items-center tf-gap-2">
+                            <div className="tf-text-right">
+                                <p className="tf-text-sm tf-font-medium tf-text-gray-900">{user.name}</p>
+                                <p className="tf-text-xs tf-text-gray-500 tf-capitalize">{user.role}</p>
+                            </div>
+                            <Avatar name={user.name} size="sm" />
+                        </div>
+                    </header>
+                    <main className="tf-flex-1 tf-p-6">
+                        <Routes>
+                            <Route path="/" element={<Dashboard />} />
+                            <Route path="/tickets" element={<TicketList />} />
+                            <Route path="/tickets/:id" element={<TicketDetail />} />
+                            <Route path="/clients" element={<ClientsPage />} />
+                            <Route path="/settings" element={<SettingsPage />} />
+                            <Route path="*" element={<Navigate to="/" replace />} />
+                        </Routes>
+                    </main>
+                </div>
             </div>
         </HashRouter>
     );

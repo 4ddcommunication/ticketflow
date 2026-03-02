@@ -50,7 +50,7 @@ class UsersController extends BaseController
     public function list_clients(WP_REST_Request $request): WP_REST_Response
     {
         $args = [
-            'role__in' => ['ticketflow_client'],
+            'role__in' => ['ticketflow_client', 'subscriber'],
             'orderby'  => 'display_name',
             'order'    => 'ASC',
         ];

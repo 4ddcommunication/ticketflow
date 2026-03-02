@@ -5,6 +5,7 @@ import { StatusBadge } from '@shared/components/StatusBadge';
 import { PriorityBadge } from '@shared/components/PriorityBadge';
 import { Pagination } from '@shared/components/Pagination';
 import { TicketFilters } from '../components/TicketFilters';
+import { StatusLegend } from '../components/StatusLegend';
 
 interface Filters {
     status: string;
@@ -40,6 +41,7 @@ export function TicketList() {
             </div>
 
             <TicketFilters filters={filters} onChange={handleFilterChange} />
+            <StatusLegend />
 
             <div className="tf-bg-white tf-rounded-lg tf-shadow-sm tf-border tf-border-gray-200 tf-overflow-hidden">
                 {loading ? (

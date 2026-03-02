@@ -16,7 +16,6 @@ export function TicketDetail() {
     const [replies, setReplies] = useState<Reply[]>([]);
     const [activity, setActivity] = useState<ActivityEntry[]>([]);
     const [agents, setAgents] = useState<User[]>([]);
-    const [tab, setTab] = useState<'replies' | 'activity'>('replies');
 
     useEffect(() => {
         if (!id) return;
@@ -31,6 +30,7 @@ export function TicketDetail() {
         await repliesApi.create(ticket.id, { body, is_internal: isInternal });
         const updated = await repliesApi.list(ticket.id);
         setReplies(updated);
+        activityApi.list(ticket.id).then(setActivity);
         refetch();
     };
 
@@ -76,7 +76,7 @@ export function TicketDetail() {
             </button>
 
             <div className="tf-flex tf-gap-6">
-                {/* Main content */}
+                {/* Main content — ticket + replies */}
                 <div className="tf-flex-1 tf-min-w-0">
                     <div className="tf-bg-white tf-rounded-lg tf-shadow-sm tf-border tf-border-gray-200 tf-mb-4">
                         <div className="tf-p-4 tf-border-b tf-border-gray-200">
@@ -94,66 +94,46 @@ export function TicketDetail() {
                         <div className="tf-p-4 tf-prose tf-prose-sm tf-max-w-none" dangerouslySetInnerHTML={{ __html: ticket.description }} />
                     </div>
 
-                    {/* Tab nav */}
-                    <div className="tf-flex tf-gap-4 tf-mb-4 tf-border-b tf-border-gray-200">
-                        <button
-                            onClick={() => setTab('replies')}
-                            className={`tf-pb-2 tf-text-sm tf-font-medium tf-border-b-2 tf-transition-colors ${tab === 'replies' ? 'tf-border-primary-600 tf-text-primary-600' : 'tf-border-transparent tf-text-gray-500'}`}
-                        >
-                            Replies ({replies.length})
-                        </button>
-                        <button
-                            onClick={() => setTab('activity')}
-                            className={`tf-pb-2 tf-text-sm tf-font-medium tf-border-b-2 tf-transition-colors ${tab === 'activity' ? 'tf-border-primary-600 tf-text-primary-600' : 'tf-border-transparent tf-text-gray-500'}`}
-                        >
-                            Activity
-                        </button>
-                    </div>
-
-                    {tab === 'replies' ? (
-                        <div className="tf-space-y-4">
-                            {replies.map((reply) => (
-                                <div
-                                    key={reply.id}
-                                    className={`tf-bg-white tf-rounded-lg tf-border tf-p-4 ${reply.is_internal ? 'tf-border-yellow-200 tf-bg-yellow-50' : 'tf-border-gray-200'}`}
-                                >
-                                    <div className="tf-flex tf-items-center tf-gap-2 tf-mb-2">
-                                        {reply.author && <Avatar name={reply.author.name} size="sm" />}
-                                        <span className="tf-text-sm tf-font-medium">{reply.author?.name || 'System'}</span>
-                                        {reply.is_internal && <span className="tf-text-xs tf-bg-yellow-200 tf-text-yellow-800 tf-px-2 tf-py-0.5 tf-rounded">Internal</span>}
-                                        <span className="tf-text-xs tf-text-gray-400 tf-ml-auto">{new Date(reply.created_at).toLocaleString()}</span>
-                                    </div>
-                                    <div className="tf-prose tf-prose-sm tf-max-w-none" dangerouslySetInnerHTML={{ __html: reply.body }} />
-                                    {reply.attachments.length > 0 && (
-                                        <div className="tf-mt-2 tf-flex tf-flex-wrap tf-gap-2">
-                                            {reply.attachments.map((att) => (
-                                                <a
-                                                    key={att.id}
-                                                    href={att.download_url}
-                                                    className="tf-flex tf-items-center tf-gap-1 tf-text-xs tf-text-primary-600 tf-bg-primary-50 tf-px-2 tf-py-1 tf-rounded hover:tf-bg-primary-100"
-                                                >
-                                                    <svg className="tf-w-3 tf-h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
-                                                    {att.file_name}
-                                                </a>
-                                            ))}
-                                        </div>
-                                    )}
+                    <div className="tf-space-y-4">
+                        {replies.map((reply) => (
+                            <div
+                                key={reply.id}
+                                className={`tf-bg-white tf-rounded-lg tf-border tf-p-4 ${reply.is_internal ? 'tf-border-yellow-200 tf-bg-yellow-50' : 'tf-border-gray-200'}`}
+                            >
+                                <div className="tf-flex tf-items-center tf-gap-2 tf-mb-2">
+                                    {reply.author && <Avatar name={reply.author.name} size="sm" />}
+                                    <span className="tf-text-sm tf-font-medium">{reply.author?.name || 'System'}</span>
+                                    {reply.is_internal && <span className="tf-text-xs tf-bg-yellow-200 tf-text-yellow-800 tf-px-2 tf-py-0.5 tf-rounded">Internal</span>}
+                                    <span className="tf-text-xs tf-text-gray-400 tf-ml-auto">{new Date(reply.created_at).toLocaleString()}</span>
                                 </div>
-                            ))}
+                                <div className="tf-prose tf-prose-sm tf-max-w-none" dangerouslySetInnerHTML={{ __html: reply.body }} />
+                                {reply.attachments.length > 0 && (
+                                    <div className="tf-mt-2 tf-flex tf-flex-wrap tf-gap-2">
+                                        {reply.attachments.map((att) => (
+                                            <a
+                                                key={att.id}
+                                                href={att.download_url}
+                                                className="tf-flex tf-items-center tf-gap-1 tf-text-xs tf-text-primary-600 tf-bg-primary-50 tf-px-2 tf-py-1 tf-rounded hover:tf-bg-primary-100"
+                                            >
+                                                <svg className="tf-w-3 tf-h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
+                                                {att.file_name}
+                                            </a>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
 
-                            <ReplyComposer
-                                onSubmit={handleReply}
-                                onUpload={handleUpload}
-                                ticketId={ticket.id}
-                            />
-                        </div>
-                    ) : (
-                        <ActivityTimeline activity={activity} />
-                    )}
+                        <ReplyComposer
+                            onSubmit={handleReply}
+                            onUpload={handleUpload}
+                            ticketId={ticket.id}
+                        />
+                    </div>
                 </div>
 
-                {/* Sidebar */}
-                <div className="tf-w-64 tf-shrink-0">
+                {/* Sidebar — ticket info + activity */}
+                <div className="tf-w-64 tf-shrink-0 tf-space-y-4">
                     <div className="tf-bg-white tf-rounded-lg tf-shadow-sm tf-border tf-border-gray-200 tf-p-4 tf-space-y-4">
                         <div>
                             <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">Status</label>
@@ -224,6 +204,12 @@ export function TicketDetail() {
                                 <p className="tf-text-sm tf-text-gray-900 tf-mt-1">{new Date(ticket.sla_deadline).toLocaleString()}</p>
                             </div>
                         )}
+                    </div>
+
+                    {/* Activity log */}
+                    <div className="tf-bg-white tf-rounded-lg tf-shadow-sm tf-border tf-border-gray-200 tf-p-4">
+                        <h3 className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase tf-mb-3">Activity</h3>
+                        <ActivityTimeline activity={activity} />
                     </div>
                 </div>
             </div>
