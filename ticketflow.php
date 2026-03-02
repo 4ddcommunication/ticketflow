@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ticketflow
  * Description: Agency ticket system — manage client support tickets with a modern dashboard and client portal.
- * Version: 1.0.0
+ * Version: 1.0.4
  * Requires PHP: 8.0
  * Author: Ticketflow
  * Text Domain: ticketflow
@@ -12,7 +12,7 @@
 
 defined('ABSPATH') || exit;
 
-define('TICKETFLOW_VERSION', '1.0.0');
+define('TICKETFLOW_VERSION', '1.0.4');
 define('TICKETFLOW_DB_VERSION', '1.0.0');
 define('TICKETFLOW_FILE', __FILE__);
 define('TICKETFLOW_DIR', plugin_dir_path(__FILE__));

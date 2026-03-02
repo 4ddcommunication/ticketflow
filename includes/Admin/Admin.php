@@ -68,7 +68,7 @@ class Admin
             <div class="tf-admin-header">
                 <h1>Ticketflow</h1>
                 <p><?php printf(esc_html__('Support ticket system for %s. Manage client tickets, track SLA, and collaborate with your team.', 'ticketflow'), $company); ?></p>
-                <a href="<?php echo esc_url($dashboard_url); ?>" class="tf-launch-btn"><?php esc_html_e('Launch Dashboard', 'ticketflow'); ?> &rarr;</a>
+                <a href="<?php echo esc_url($dashboard_url); ?>" class="tf-launch-btn" target="_blank"><?php esc_html_e('Launch Dashboard', 'ticketflow'); ?> &rarr;</a>
                 <a href="<?php echo esc_url($portal_url); ?>" class="tf-portal-link" target="_blank"><?php esc_html_e('View Client Portal', 'ticketflow'); ?> &nearr;</a>
             </div>
 

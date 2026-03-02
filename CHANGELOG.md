@@ -2,6 +2,19 @@
 
 All notable changes to Ticketflow are documented in this file.
 
+## [1.0.4] — 2026-03-02
+
+### Added
+- Full German i18n for admin dashboard and client portal (lightweight `t()` function)
+- German `.po/.mo` translation files for all PHP strings (emails, admin page, API errors)
+- Locale detection from WordPress (`get_locale()`) passed to both SPAs
+- ~160 React translation keys + ~90 PHP translation strings
+
+### Changed
+- Admin onboarding page CTA links now open in new tabs
+- Email layout uses dynamic `lang` attribute from WordPress locale
+- Email footer "All rights reserved." is now translatable
+
 ## [1.0.3] — 2026-03-02
 
 ### Added
