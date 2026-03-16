@@ -6,13 +6,16 @@ $shared_chunk = \Ticketflow\Admin\Admin::get_shared_chunk();
 $settings    = get_option('ticketflow_settings', []);
 $accent      = $settings['portal_accent_color'] ?? '#4f46e5';
 $company     = esc_attr($settings['company_name'] ?? get_bloginfo('name'));
+$logo        = $settings['company_logo'] ?? '';
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo esc_html($company); ?> — Ticketflow</title>
+    <title><?php echo esc_html($company); ?> — Support</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="stylesheet" href="<?php echo esc_url($base_url . 'styles/styles.css?ver=' . TICKETFLOW_VERSION); ?>">
     <link rel="stylesheet" href="<?php echo esc_url($base_url . 'fonts/inter.css?ver=' . TICKETFLOW_VERSION); ?>">
     <style>
@@ -32,6 +35,7 @@ $company     = esc_attr($settings['company_name'] ?? get_bloginfo('name'));
             userId: <?php echo (int) get_current_user_id(); ?>,
             portalUrl: <?php echo wp_json_encode(get_permalink(get_option('ticketflow_portal_page_id'))); ?>,
             companyName: <?php echo wp_json_encode($company); ?>,
+            companyLogo: <?php echo wp_json_encode($logo); ?>,
             accentColor: <?php echo wp_json_encode($accent); ?>,
             logoutNonce: <?php echo wp_json_encode(wp_create_nonce('log-out')); ?>,
             logoutUrl: <?php echo wp_json_encode(wp_logout_url(home_url())); ?>,

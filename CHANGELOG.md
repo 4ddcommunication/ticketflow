@@ -2,6 +2,30 @@
 
 All notable changes to Ticketflow are documented in this file.
 
+## [1.0.5] — 2026-03-16
+
+### Added
+- Company name field on client profiles (user meta, API, admin UI, WP user edit)
+- New admin email template (`ticket-new-admin`) for new ticket notifications — shows client message preview (~50 words)
+- Upload success confirmation (green checkmark) in file uploader
+- Brand logo component replaces text branding throughout admin and portal
+
+### Changed
+- All email templates converted to German (hardcoded, no i18n overhead)
+- Admin email "Ticket anzeigen" button now links to standalone dashboard instead of wp-admin
+- Email header uses PNG logo on grey background instead of purple text header
+- Email threading via In-Reply-To / References headers (Gmail groups by ticket)
+- New ticket notification sent to all admins/agents, not just assigned agent
+- Client replies notify all admins/agents
+- Company name shown in ticket list, ticket detail sidebar, and email notifications
+- Portal: removed Datenschutz footer and border, logo size increased
+- Admin: removed avatar initials from header, logout stacked under username
+
+### Fixed
+- Attachment download 401 error — bypass REST nonce for direct browser download links
+- Orphaned attachments now auto-link to reply on submission
+- Duplicate attachment cleanup
+
 ## [1.0.4] — 2026-03-02
 
 ### Added

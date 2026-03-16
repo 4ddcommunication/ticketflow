@@ -76,6 +76,31 @@ final class Ticketflow
 
         // Email hooks
         $email_service->register_hooks();
+
+        // Company field on user profile
+        $company_field = function (\WP_User $user): void {
+            $company = get_user_meta($user->ID, 'ticketflow_company', true);
+            ?>
+            <h3><?php esc_html_e('Ticketflow', 'ticketflow'); ?></h3>
+            <table class="form-table">
+                <tr>
+                    <th><label for="ticketflow_company"><?php esc_html_e('Company', 'ticketflow'); ?></label></th>
+                    <td><input type="text" name="ticketflow_company" id="ticketflow_company" value="<?php echo esc_attr($company); ?>" class="regular-text" /></td>
+                </tr>
+            </table>
+            <?php
+        };
+        add_action('show_user_profile', $company_field);
+        add_action('edit_user_profile', $company_field);
+
+        $save_company = function (int $user_id): void {
+            if (!current_user_can('edit_user', $user_id)) return;
+            if (isset($_POST['ticketflow_company'])) {
+                update_user_meta($user_id, 'ticketflow_company', sanitize_text_field($_POST['ticketflow_company']));
+            }
+        };
+        add_action('personal_options_update', $save_company);
+        add_action('edit_user_profile_update', $save_company);
     }
 
     private function check_db_version(): void

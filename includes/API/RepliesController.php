@@ -108,6 +108,21 @@ class RepliesController extends BaseController
             return $this->error('create_failed', __('Failed to create reply.', 'ticketflow'), 500);
         }
 
+        // Link unlinked attachments from this user to this reply
+        global $wpdb;
+        $att_table = \Ticketflow\Database\Schema::table('attachments');
+        $wpdb->update(
+            $att_table,
+            ['reply_id' => $id],
+            [
+                'ticket_id'   => $ticket->id,
+                'uploaded_by' => get_current_user_id(),
+                'reply_id'    => null,
+            ],
+            ['%d'],
+            ['%d', '%d', null]
+        );
+
         // Update ticket updated_at
         Ticket::update($ticket->id, []);
 

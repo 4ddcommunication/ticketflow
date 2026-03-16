@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 32" height="32">
+  <text x="0" y="24" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="24">
+    <tspan font-weight="300" fill="#a1a1aa">klein</tspan><tspan font-weight="900" fill="#18181b">books</tspan>
+  </text>
+  <circle cx="170" cy="12" r="4.5" fill="#6366f1"/>
+</svg>

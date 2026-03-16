@@ -71,7 +71,10 @@ export function TicketList() {
                                                 <span className="tf-text-sm tf-text-gray-900 group-hover:tf-text-primary-600">{ticket.subject}</span>
                                             </Link>
                                         </td>
-                                        <td className="tf-px-4 tf-py-3 tf-text-sm tf-text-gray-600">{ticket.client?.name || '-'}</td>
+                                        <td className="tf-px-4 tf-py-3">
+                                            <span className="tf-text-sm tf-text-gray-600 tf-block">{ticket.client?.name || '-'}</span>
+                                            {ticket.client?.company && <span className="tf-text-xs tf-text-gray-400">{ticket.client.company}</span>}
+                                        </td>
                                         <td className="tf-px-4 tf-py-3 tf-text-sm tf-text-gray-600">{ticket.agent?.name || <span className="tf-text-gray-400">{t('Unassigned')}</span>}</td>
                                         <td className="tf-px-4 tf-py-3"><StatusBadge status={ticket.status} /></td>
                                         <td className="tf-px-4 tf-py-3"><PriorityBadge priority={ticket.priority} /></td>

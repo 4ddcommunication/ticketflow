@@ -11,6 +11,7 @@ export function FileUploader({ onUpload, accept, maxSizeMb = 10 }: Props) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState('');
+    const [uploadedName, setUploadedName] = useState('');
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -22,9 +23,11 @@ export function FileUploader({ onUpload, accept, maxSizeMb = 10 }: Props) {
         }
 
         setError('');
+        setUploadedName('');
         setUploading(true);
         try {
             await onUpload(file);
+            setUploadedName(file.name);
         } catch (err) {
             setError(err instanceof Error ? err.message : t('Upload failed'));
         } finally {
@@ -57,6 +60,7 @@ export function FileUploader({ onUpload, accept, maxSizeMb = 10 }: Props) {
                 {t('Attach file')}
             </label>
             {error && <p className="tf-text-red-600 tf-text-xs tf-mt-1">{error}</p>}
+            {uploadedName && <p className="tf-text-green-600 tf-text-xs tf-mt-1">✓ {uploadedName}</p>}
         </div>
     );
 }

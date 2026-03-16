@@ -184,6 +184,7 @@ export function TicketDetail() {
                         <div>
                             <label className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase">{t('Client')}</label>
                             <p className="tf-text-sm tf-text-gray-900 tf-mt-1">{ticket.client?.name || '-'}</p>
+                            {ticket.client?.company && <p className="tf-text-xs tf-text-gray-500 tf-font-medium">{ticket.client.company}</p>}
                             {ticket.client?.email && <p className="tf-text-xs tf-text-gray-500">{ticket.client.email}</p>}
                         </div>
 

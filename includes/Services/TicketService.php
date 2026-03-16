@@ -147,9 +147,10 @@ class TicketService
             'priority'     => $ticket->priority,
             'category'     => $ticket->category,
             'client'       => $client ? [
-                'id'    => (int) $client->ID,
-                'name'  => $client->display_name,
-                'email' => $client->user_email,
+                'id'      => (int) $client->ID,
+                'name'    => $client->display_name,
+                'email'   => $client->user_email,
+                'company' => get_user_meta($client->ID, 'ticketflow_company', true) ?: '',
             ] : null,
             'agent'        => $agent ? [
                 'id'   => (int) $agent->ID,

@@ -34,7 +34,6 @@ export function App() {
                                 <p className="tf-text-sm tf-font-medium tf-text-gray-900">{user.name}</p>
                                 <p className="tf-text-xs tf-text-gray-500 tf-capitalize">{user.role}</p>
                             </div>
-                            <Avatar name={user.name} size="sm" />
                         </div>
                     </header>
                     <main className="tf-flex-1 tf-p-6">

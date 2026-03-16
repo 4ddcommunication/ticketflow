@@ -40,6 +40,8 @@ class EmailService
         if (!$client) return;
 
         $portal_url = $this->get_portal_url();
+        $company = get_user_meta($ticket->client_id, 'ticketflow_company', true) ?: '';
+        $client_label = $company ? $client->display_name . ' (' . $company . ')' : $client->display_name;
 
         // Notify client
         $this->mailer->send(
@@ -55,23 +57,23 @@ class EmailService
             ]
         );
 
-        // Notify assigned agent
-        if ($ticket->agent_id) {
-            $agent = get_userdata($ticket->agent_id);
-            if ($agent) {
-                $this->mailer->send(
-                    $agent->user_email,
-                    sprintf(__('[%s] New Ticket Assigned: %s', 'ticketflow'), $ticket->ticket_uid, $ticket->subject),
-                    'ticket-assigned',
-                    [
-                        'agent_name'  => $agent->display_name,
-                        'client_name' => $client->display_name,
-                        'ticket_uid'  => $ticket->ticket_uid,
-                        'subject'     => $ticket->subject,
-                        'admin_url'   => admin_url('admin.php?page=ticketflow#/tickets/' . $ticket->id),
-                    ]
-                );
-            }
+        // Notify all admins
+        $admins = get_users(['role__in' => ['administrator', 'ticketflow_admin', 'ticketflow_agent']]);
+        foreach ($admins as $admin) {
+            if ((int) $admin->ID === (int) $ticket->client_id) continue;
+            $this->mailer->send(
+                $admin->user_email,
+                sprintf(__('[%s] New Ticket: %s', 'ticketflow'), $ticket->ticket_uid, $ticket->subject),
+                'ticket-new-admin',
+                [
+                    'agent_name'  => $admin->display_name,
+                    'client_name' => $client_label,
+                    'ticket_uid'  => $ticket->ticket_uid,
+                    'subject'     => $ticket->subject,
+                    'description' => wp_trim_words(wp_strip_all_tags($ticket->description), 50),
+                    'admin_url'   => $this->get_dashboard_url($ticket->id),
+                ]
+            );
         }
     }
 
@@ -86,25 +88,29 @@ class EmailService
         $author  = get_userdata($author_id);
         $client  = get_userdata($ticket->client_id);
         $agent   = $ticket->agent_id ? get_userdata($ticket->agent_id) : null;
+        $company = get_user_meta($ticket->client_id, 'ticketflow_company', true) ?: '';
+        $client_label = $company ? $client->display_name . ' (' . $company . ')' : $client->display_name;
 
         $portal_url = $this->get_portal_url();
 
-        // Notify the other party
-        if ($author_id == $ticket->client_id && $agent) {
-            // Client replied → notify agent
-            $this->mailer->send(
-                $agent->user_email,
-                sprintf(__('[%s] New Reply: %s', 'ticketflow'), $ticket->ticket_uid, $ticket->subject),
-                'reply-added',
-                [
-                    'recipient_name' => $agent->display_name,
-                    'author_name'    => $author->display_name,
-                    'ticket_uid'     => $ticket->ticket_uid,
-                    'subject'        => $ticket->subject,
-                    'reply_preview'  => wp_trim_words(wp_strip_all_tags($reply->body), 50),
-                    'view_url'       => admin_url('admin.php?page=ticketflow#/tickets/' . $ticket->id),
-                ]
-            );
+        if ($author_id == $ticket->client_id) {
+            // Client replied → notify all admins/agents
+            $staff = get_users(['role__in' => ['administrator', 'ticketflow_admin', 'ticketflow_agent']]);
+            foreach ($staff as $member) {
+                $this->mailer->send(
+                    $member->user_email,
+                    sprintf(__('[%s] New Reply: %s', 'ticketflow'), $ticket->ticket_uid, $ticket->subject),
+                    'reply-added',
+                    [
+                        'recipient_name' => $member->display_name,
+                        'author_name'    => $client_label,
+                        'ticket_uid'     => $ticket->ticket_uid,
+                        'subject'        => $ticket->subject,
+                        'reply_preview'  => wp_trim_words(wp_strip_all_tags($reply->body), 50),
+                        'view_url'       => $this->get_dashboard_url($ticket->id),
+                    ]
+                );
+            }
         } elseif ($client) {
             // Agent replied → notify client
             $this->mailer->send(
@@ -132,16 +138,19 @@ class EmailService
         $client = get_userdata($ticket->client_id);
         if (!$agent) return;
 
+        $company = get_user_meta($ticket->client_id, 'ticketflow_company', true) ?: '';
+        $client_label = $client ? ($company ? $client->display_name . ' (' . $company . ')' : $client->display_name) : __('Unknown', 'ticketflow');
+
         $this->mailer->send(
             $agent->user_email,
             sprintf(__('[%s] Ticket Assigned to You: %s', 'ticketflow'), $ticket->ticket_uid, $ticket->subject),
             'ticket-assigned',
             [
                 'agent_name'  => $agent->display_name,
-                'client_name' => $client ? $client->display_name : __('Unknown', 'ticketflow'),
+                'client_name' => $client_label,
                 'ticket_uid'  => $ticket->ticket_uid,
                 'subject'     => $ticket->subject,
-                'admin_url'   => admin_url('admin.php?page=ticketflow#/tickets/' . $ticket->id),
+                'admin_url'   => $this->get_dashboard_url($ticket->id),
             ]
         );
     }
@@ -211,5 +220,12 @@ class EmailService
     {
         $page_id = get_option('ticketflow_portal_page_id');
         return $page_id ? get_permalink($page_id) : home_url();
+    }
+
+    private function get_dashboard_url(int $ticket_id): string
+    {
+        $page_id = get_option('ticketflow_dashboard_page_id');
+        $base = $page_id ? get_permalink($page_id) : admin_url('admin.php?page=ticketflow');
+        return $base . '#/tickets/' . $ticket_id;
     }
 }
