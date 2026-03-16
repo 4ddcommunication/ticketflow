@@ -2,6 +2,23 @@
 
 All notable changes to Ticketflow are documented in this file.
 
+## [1.0.6] — 2026-03-16
+
+### Added
+- Internal note email notifications — all other admins/agents get notified when someone adds an internal note
+- Priority badge (colored label) on new ticket and assignment email templates
+- German status translations in status-change emails (Offen, In Bearbeitung, Wartend, Gelöst, Geschlossen)
+
+### Changed
+- All email templates and subject lines fully hardcoded in German (no i18n overhead)
+- Admin email "Ticket anzeigen" button links to standalone dashboard instead of wp-admin
+- File uploader: button-based trigger instead of label/form to prevent accidental page reloads
+- Reply composer layout: file attach button and confirmation between textarea and action buttons
+- Silent refetch after file upload — no loading spinner flash
+
+### Fixed
+- File upload causing apparent page reload (was loading spinner unmounting the view)
+
 ## [1.0.5] — 2026-03-16
 
 ### Added
