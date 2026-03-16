@@ -128,7 +128,9 @@ class RepliesController extends BaseController
 
         $this->activity->log($ticket->id, $is_internal ? 'internal_note_added' : 'reply_added');
 
-        if (!$is_internal) {
+        if ($is_internal) {
+            do_action('ticketflow_internal_note_added', $ticket->id, $id, get_current_user_id());
+        } else {
             do_action('ticketflow_reply_added', $ticket->id, $id, get_current_user_id());
         }
 

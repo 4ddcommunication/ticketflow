@@ -12,8 +12,7 @@ export function ReplyBox({ onSubmit, onUpload, accentColor }: Props) {
     const [body, setBody] = useState('');
     const [submitting, setSubmitting] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         if (!body.trim()) return;
         setSubmitting(true);
         try {
@@ -25,7 +24,7 @@ export function ReplyBox({ onSubmit, onUpload, accentColor }: Props) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="tf-bg-white tf-rounded-lg tf-border tf-border-gray-200 tf-p-4">
+        <div className="tf-bg-white tf-rounded-lg tf-border tf-border-gray-200 tf-p-4">
             <textarea
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
@@ -36,7 +35,8 @@ export function ReplyBox({ onSubmit, onUpload, accentColor }: Props) {
             <div className="tf-flex tf-items-center tf-justify-between tf-mt-3">
                 <FileUploader onUpload={onUpload} />
                 <button
-                    type="submit"
+                    type="button"
+                    onClick={handleSubmit}
                     disabled={!body.trim() || submitting}
                     className="tf-px-4 tf-py-2 tf-rounded-lg tf-text-sm tf-font-medium tf-text-white disabled:tf-opacity-50"
                     style={{ backgroundColor: accentColor }}
@@ -44,6 +44,6 @@ export function ReplyBox({ onSubmit, onUpload, accentColor }: Props) {
                     {submitting ? t('Sending...') : t('Reply')}
                 </button>
             </div>
-        </form>
+        </div>
     );
 }

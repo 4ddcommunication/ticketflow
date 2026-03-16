@@ -18,6 +18,7 @@ export function FileUploader({ onUpload, accept, maxSizeMb = 10 }: Props) {
         if (!file) return;
 
         if (file.size > maxSizeMb * 1024 * 1024) {
+            console.log('[FileUploader] file too large');
             setError(t('File exceeds {size}MB limit', { size: maxSizeMb }));
             return;
         }
@@ -36,6 +37,12 @@ export function FileUploader({ onUpload, accept, maxSizeMb = 10 }: Props) {
         }
     };
 
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        inputRef.current?.click();
+    };
+
     return (
         <div>
             <input
@@ -43,11 +50,11 @@ export function FileUploader({ onUpload, accept, maxSizeMb = 10 }: Props) {
                 type="file"
                 accept={accept}
                 onChange={handleChange}
-                className="tf-hidden"
-                id="tf-file-upload"
+                style={{ display: 'none' }}
             />
-            <label
-                htmlFor="tf-file-upload"
+            <button
+                type="button"
+                onClick={handleClick}
                 className="tf-inline-flex tf-items-center tf-gap-1.5 tf-px-3 tf-py-1.5 tf-text-sm tf-border tf-border-gray-300 tf-rounded tf-cursor-pointer hover:tf-bg-gray-50"
             >
                 {uploading ? (
@@ -58,7 +65,7 @@ export function FileUploader({ onUpload, accept, maxSizeMb = 10 }: Props) {
                     </svg>
                 )}
                 {t('Attach file')}
-            </label>
+            </button>
             {error && <p className="tf-text-red-600 tf-text-xs tf-mt-1">{error}</p>}
             {uploadedName && <p className="tf-text-green-600 tf-text-xs tf-mt-1">✓ {uploadedName}</p>}
         </div>

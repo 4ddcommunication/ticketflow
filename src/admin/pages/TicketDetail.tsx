@@ -59,7 +59,7 @@ export function TicketDetail() {
     const handleUpload = async (file: File) => {
         if (!ticket) return;
         await attachmentsApi.upload(ticket.id, file);
-        refetch();
+        refetch(true);
     };
 
     if (loading) {

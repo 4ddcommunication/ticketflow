@@ -55,9 +55,9 @@ export function useTicket(id: number | null) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const fetch = useCallback(async () => {
+    const fetch = useCallback(async (silent = false) => {
         if (!id) return;
-        setLoading(true);
+        if (!silent) setLoading(true);
         try {
             const data = await ticketsApi.get(id);
             setTicket(data);
