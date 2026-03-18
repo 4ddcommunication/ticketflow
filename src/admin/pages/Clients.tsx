@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { usersApi } from '@shared/api/endpoints';
 import type { User } from '@shared/api/types';
 import { Avatar } from '@shared/components/Avatar';
@@ -11,8 +12,10 @@ export function ClientsPage() {
     const [showNew, setShowNew] = useState(false);
     const [newEmail, setNewEmail] = useState('');
     const [newName, setNewName] = useState('');
+    const [newCompany, setNewCompany] = useState('');
     const [creating, setCreating] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const fetchClients = async () => {
         setLoading(true);
@@ -35,9 +38,10 @@ export function ClientsPage() {
         setCreating(true);
         setError('');
         try {
-            await usersApi.createClient({ email: newEmail, name: newName });
+            await usersApi.createClient({ email: newEmail, name: newName, company: newCompany || undefined });
             setNewEmail('');
             setNewName('');
+            setNewCompany('');
             setShowNew(false);
             fetchClients();
         } catch (err) {
@@ -77,6 +81,13 @@ export function ClientsPage() {
                             className="tf-input tf-flex-1"
                             required
                         />
+                        <input
+                            type="text"
+                            placeholder={t('Company') + ' (' + t('optional') + ')'}
+                            value={newCompany}
+                            onChange={(e) => setNewCompany(e.target.value)}
+                            className="tf-input tf-flex-1"
+                        />
                         <button
                             type="submit"
                             disabled={creating}
@@ -111,18 +122,71 @@ export function ClientsPage() {
                     <p className="tf-py-12 tf-text-center tf-text-gray-500">{t('No clients found.')}</p>
                 ) : (
                     <div className="tf-divide-y tf-divide-gray-100">
-                        {clients.map((client) => (
-                            <div key={client.id} className="tf-flex tf-items-center tf-gap-3 tf-px-4 tf-py-3">
-                                <Avatar name={client.name} />
-                                <div className="tf-min-w-0">
-                                    <p className="tf-text-sm tf-font-medium tf-text-gray-900">{client.name}</p>
-                                    <p className="tf-text-xs tf-text-gray-500">{client.email}</p>
-                                </div>
-                                <span className="tf-text-xs tf-text-gray-400 tf-ml-auto">
-                                    {t('Joined')} {new Date(client.registered || '').toLocaleDateString()}
-                                </span>
-                            </div>
-                        ))}
+                        {(() => {
+                            // Group clients: company users collapse into one row, others stay individual
+                            const companyMap = new Map<string, User[]>();
+                            const individuals: User[] = [];
+                            clients.forEach((c) => {
+                                if (c.company) {
+                                    const existing = companyMap.get(c.company) || [];
+                                    existing.push(c);
+                                    companyMap.set(c.company, existing);
+                                } else {
+                                    individuals.push(c);
+                                }
+                            });
+
+                            const rows: React.ReactNode[] = [];
+
+                            // Company rows
+                            companyMap.forEach((members, company) => {
+                                const first = members[0];
+                                rows.push(
+                                    <div
+                                        key={`company-${company}`}
+                                        onClick={() => navigate(`/clients/${first.id}`)}
+                                        className="tf-flex tf-items-center tf-gap-3 tf-px-4 tf-py-3 hover:tf-bg-gray-50 tf-cursor-pointer"
+                                    >
+                                        <div className="tf-w-8 tf-h-8 tf-rounded-full tf-bg-primary-100 tf-text-primary-700 tf-flex tf-items-center tf-justify-center tf-text-xs tf-font-bold tf-shrink-0">
+                                            {company.charAt(0).toUpperCase()}
+                                        </div>
+                                        <div className="tf-min-w-0">
+                                            <p className="tf-text-sm tf-font-medium tf-text-gray-900">{company}</p>
+                                            <p className="tf-text-xs tf-text-gray-500">
+                                                {members.length} {members.length === 1 ? t('Contact') : t('Contacts')}
+                                            </p>
+                                        </div>
+                                        <div className="tf-flex tf-items-center tf-gap-1 tf-ml-auto">
+                                            {members.map((m) => (
+                                                <Avatar key={m.id} name={m.name} size="sm" />
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+                            });
+
+                            // Individual rows
+                            individuals.forEach((client) => {
+                                rows.push(
+                                    <div
+                                        key={client.id}
+                                        onClick={() => navigate(`/clients/${client.id}`)}
+                                        className="tf-flex tf-items-center tf-gap-3 tf-px-4 tf-py-3 hover:tf-bg-gray-50 tf-cursor-pointer"
+                                    >
+                                        <Avatar name={client.name} />
+                                        <div className="tf-min-w-0">
+                                            <p className="tf-text-sm tf-font-medium tf-text-gray-900">{client.name}</p>
+                                            <p className="tf-text-xs tf-text-gray-500">{client.email}</p>
+                                        </div>
+                                        <span className="tf-text-xs tf-text-gray-400 tf-ml-auto">
+                                            {t('Joined')} {new Date(client.registered || '').toLocaleDateString()}
+                                        </span>
+                                    </div>
+                                );
+                            });
+
+                            return rows;
+                        })()}
                     </div>
                 )}
             </div>

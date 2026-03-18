@@ -3,8 +3,8 @@
     "file": "styles/styles.css",
     "src": "_styles-!~{001}~.js"
   },
-  "_styles-CYx6hofz.js": {
-    "file": "styles/chunks/styles-CYx6hofz.js",
+  "_styles-BZNIlc-9.js": {
+    "file": "styles/chunks/styles-BZNIlc-9.js",
     "name": "styles",
     "css": [
       "styles/styles.css"
@@ -16,7 +16,7 @@
     "src": "src/admin/main.tsx",
     "isEntry": true,
     "imports": [
-      "_styles-CYx6hofz.js"
+      "_styles-BZNIlc-9.js"
     ]
   },
   "src/portal/main.tsx": {
@@ -25,7 +25,7 @@
     "src": "src/portal/main.tsx",
     "isEntry": true,
     "imports": [
-      "_styles-CYx6hofz.js"
+      "_styles-BZNIlc-9.js"
     ]
   }
 }

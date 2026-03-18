@@ -61,6 +61,12 @@ class UsersController extends BaseController
             $args['search_columns'] = ['user_login', 'user_email', 'display_name'];
         }
 
+        $company = $request->get_param('company');
+        if ($company) {
+            $args['meta_key']   = 'ticketflow_company';
+            $args['meta_value'] = sanitize_text_field($company);
+        }
+
         $per_page = max(1, min(100, (int) ($request->get_param('per_page') ?: 50)));
         $page     = max(1, (int) $request->get_param('page'));
         $args['number'] = $per_page;
@@ -119,6 +125,11 @@ class UsersController extends BaseController
             return $user_id;
         }
 
+        $company = sanitize_text_field($request->get_param('company'));
+        if ($company) {
+            update_user_meta($user_id, 'ticketflow_company', $company);
+        }
+
         $user = get_userdata($user_id);
         return $this->success($this->format_user($user), 201);
     }
@@ -145,6 +156,7 @@ class UsersController extends BaseController
             'name'       => $user->display_name,
             'email'      => $user->user_email,
             'role'       => (new \Ticketflow\Services\AuthService())->get_ticketflow_role($user),
+            'company'    => get_user_meta($user->ID, 'ticketflow_company', true) ?: '',
             'registered' => $user->user_registered,
         ];
     }

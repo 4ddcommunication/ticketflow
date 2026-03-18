@@ -2,6 +2,19 @@
 
 All notable changes to Ticketflow are documented in this file.
 
+## [1.0.9] — 2026-03-18
+
+### Added
+- Client detail page with ticket stats (total, open, closed) and ticket history table
+- Company grouping — clients with same company name are merged into one entry in the Kunden list
+- Company view on client detail: shows all contacts and combined tickets across the company
+- Company field in "Add Client" form (optional)
+- Client names clickable in ticket detail sidebar (links to client/company page)
+
+### Changed
+- Kunden list: company clients grouped into single row with contact avatars
+- Removed "Neues Ticket" button from admin ticket list (only clients create tickets)
+
 ## [1.0.8] — 2026-03-18
 
 ### Added

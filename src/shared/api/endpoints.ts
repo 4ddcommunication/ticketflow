@@ -91,7 +91,11 @@ export const usersApi = {
         return paginatedRequest<User>(`/clients?${qs}`);
     },
     getClient: (id: number) => api.get<User>(`/clients/${id}`),
-    createClient: (data: { email: string; name?: string }) =>
+    listByCompany: (company: string) => {
+        const qs = new URLSearchParams({ company, per_page: '100' });
+        return paginatedRequest<User>(`/clients?${qs}`);
+    },
+    createClient: (data: { email: string; name?: string; company?: string }) =>
         api.post<User>('/clients', data),
     listAgents: () => api.get<User[]>('/agents'),
 };

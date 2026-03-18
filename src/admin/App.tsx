@@ -7,6 +7,7 @@ import { TicketList } from './pages/TicketList';
 import { TicketDetail } from './pages/TicketDetail';
 import { SettingsPage } from './pages/Settings';
 import { ClientsPage } from './pages/Clients';
+import { ClientDetail } from './pages/ClientDetail';
 
 export function App() {
     const { user, loading } = useAuth();
@@ -42,6 +43,7 @@ export function App() {
                             <Route path="/tickets" element={<TicketList />} />
                             <Route path="/tickets/:id" element={<TicketDetail />} />
                             <Route path="/clients" element={<ClientsPage />} />
+                            <Route path="/clients/:id" element={<ClientDetail />} />
                             <Route path="/settings" element={<SettingsPage />} />
                             <Route path="*" element={<Navigate to="/" replace />} />
                         </Routes>

@@ -3,6 +3,7 @@ export interface User {
     name: string;
     email: string;
     role: 'admin' | 'agent' | 'client';
+    company?: string;
     caps?: string[];
     registered?: string;
 }
@@ -15,7 +16,7 @@ export interface Ticket {
     status: TicketStatus;
     priority: TicketPriority;
     category: string | null;
-    client: Pick<User, 'id' | 'name' | 'email'> | null;
+    client: Pick<User, 'id' | 'name' | 'email' | 'company'> | null;
     agent: Pick<User, 'id' | 'name'> | null;
     sla_deadline: string | null;
     reply_count: number;

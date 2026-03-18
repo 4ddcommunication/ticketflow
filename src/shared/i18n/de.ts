@@ -68,6 +68,12 @@ const de: Record<string, string> = {
     'All Priorities': 'Alle Prioritäten',
     'Clear filters': 'Filter zurücksetzen',
 
+    // Client Detail
+    'Back to clients': 'Zurück zu Kunden',
+    'Client not found.': 'Kunde nicht gefunden.',
+    'Contact': 'Kontakt',
+    'Contacts': 'Kontakte',
+
     // Ticket Detail
     'Back to tickets': 'Zurück zu Tickets',
     'Ticket not found.': 'Ticket nicht gefunden.',
@@ -119,7 +125,9 @@ const de: Record<string, string> = {
 
     // Settings Page
     'General': 'Allgemein',
+    'Company': 'Firma',
     'Company Name': 'Firmenname',
+    'optional': 'optional',
     'Portal Accent Color': 'Portal-Akzentfarbe',
     'Accent color hint': 'Wird auf das Kundenportal und die E-Mail-Vorlagen angewendet',
     'Ticket Categories': 'Ticket-Kategorien',
