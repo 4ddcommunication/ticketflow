@@ -3,9 +3,16 @@ import { t } from '@shared/i18n';
 
 const IMAGE_EXTS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
 
+function getExt(fileName: string): string {
+    return fileName.split('.').pop()?.toLowerCase() || '';
+}
+
 function isImage(fileName: string): boolean {
-    const ext = fileName.split('.').pop()?.toLowerCase() || '';
-    return IMAGE_EXTS.includes(ext);
+    return IMAGE_EXTS.includes(getExt(fileName));
+}
+
+function isPdf(fileName: string): boolean {
+    return getExt(fileName) === 'pdf';
 }
 
 function getNonce(): string {
@@ -68,6 +75,16 @@ export function AttachmentLink({ fileName, downloadUrl, showIcon = true }: Props
             } finally {
                 setLoading(false);
             }
+        } else if (isPdf(fileName)) {
+            setLoading(true);
+            try {
+                const url = await fetchBlob(downloadUrl);
+                window.open(url, '_blank');
+            } catch {
+                // fallback
+            } finally {
+                setLoading(false);
+            }
         } else {
             setLoading(true);
             try {
@@ -75,7 +92,7 @@ export function AttachmentLink({ fileName, downloadUrl, showIcon = true }: Props
                 triggerDownload(url, fileName);
                 URL.revokeObjectURL(url);
             } catch {
-                // fallback: nothing we can do
+                // fallback
             } finally {
                 setLoading(false);
             }
