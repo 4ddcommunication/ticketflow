@@ -2,6 +2,15 @@
 
 All notable changes to Ticketflow are documented in this file.
 
+## [1.0.8] — 2026-03-18
+
+### Added
+- PDF attachments open in new browser tab instead of downloading
+- Dashboard content constrained to 1300px, left-aligned
+
+### Changed
+- Attachment behavior: images → lightbox, PDFs → new tab, other files → download
+
 ## [1.0.7] — 2026-03-18
 
 ### Added
