@@ -2,6 +2,17 @@
 
 All notable changes to Ticketflow are documented in this file.
 
+## [1.1.0] — 2026-03-18
+
+### Added
+- Ticket export as ZIP (conversation .txt + all attachments in /attachments folder)
+- "Aktiv" default filter on ticket list — hides closed/resolved tickets for admins
+- Dashboard "Aktuelle Tickets" now excludes closed/resolved
+
+### Changed
+- Export button styled black for visibility
+- Status filter defaults to "Aktiv" instead of "Alle Status"
+
 ## [1.0.9] — 2026-03-18
 
 ### Added

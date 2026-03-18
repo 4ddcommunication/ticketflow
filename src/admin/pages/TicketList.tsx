@@ -16,7 +16,7 @@ interface Filters {
 
 export function TicketList() {
     const [page, setPage] = useState(1);
-    const [filters, setFilters] = useState<Filters>({ status: '', priority: '', search: '' });
+    const [filters, setFilters] = useState<Filters>({ status: 'active', priority: '', search: '' });
 
     const { tickets, total, pages, loading } = useTickets({
         page,

@@ -30,6 +30,7 @@ export function TicketFilters({ filters, onChange }: Props) {
                 onChange={(e) => update('status', e.target.value)}
                 className="tf-px-3 tf-py-2 tf-text-sm tf-border tf-border-gray-300 tf-rounded-lg focus:tf-ring-2 focus:tf-ring-primary-500 tf-outline-none"
             >
+                <option value="active">{t('Active')}</option>
                 <option value="">{t('All Statuses')}</option>
                 <option value="open">{t('Open')}</option>
                 <option value="in_progress">{t('In Progress')}</option>
@@ -48,9 +49,9 @@ export function TicketFilters({ filters, onChange }: Props) {
                 <option value="high">{t('High')}</option>
                 <option value="urgent">{t('Urgent')}</option>
             </select>
-            {(filters.status || filters.priority || filters.search) && (
+            {(filters.status !== 'active' || filters.priority || filters.search) && (
                 <button
-                    onClick={() => onChange({ status: '', priority: '', search: '' })}
+                    onClick={() => onChange({ status: 'active', priority: '', search: '' })}
                     className="tf-px-3 tf-py-2 tf-text-sm tf-text-gray-500 hover:tf-text-gray-700"
                 >
                     {t('Clear filters')}

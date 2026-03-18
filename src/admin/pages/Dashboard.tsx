@@ -14,7 +14,7 @@ export function Dashboard() {
     useEffect(() => {
         Promise.all([
             dashboardApi.stats(),
-            ticketsApi.list({ per_page: 5, orderby: 'updated_at', order: 'DESC' }),
+            ticketsApi.list({ per_page: 5, orderby: 'updated_at', order: 'DESC', status: 'active' }),
         ]).then(([s, r]) => {
             setStats(s);
             setRecent(r.items);

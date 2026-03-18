@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTicket } from '@shared/hooks/useTickets';
 import { repliesApi, activityApi, ticketsApi, usersApi, attachmentsApi } from '@shared/api/endpoints';
-import type { Reply, ActivityEntry, User, TicketStatus, TicketPriority } from '@shared/api/types';
+import type { Reply, ActivityEntry, User, TicketStatus, TicketPriority, Ticket, AttachmentInfo } from '@shared/api/types';
 import { StatusBadge } from '@shared/components/StatusBadge';
 import { PriorityBadge } from '@shared/components/PriorityBadge';
 import { Avatar } from '@shared/components/Avatar';
@@ -10,6 +10,53 @@ import { ReplyComposer } from '../components/ReplyComposer';
 import { ActivityTimeline } from '../components/ActivityTimeline';
 import { AttachmentLink } from '@shared/components/AttachmentLink';
 import { t } from '@shared/i18n';
+import JSZip from 'jszip';
+
+function stripHtml(html: string): string {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
+}
+
+function buildExportText(ticket: Ticket, replies: Reply[]): string {
+    const lines: string[] = [];
+    const sep = '─'.repeat(60);
+
+    lines.push(`TICKET EXPORT — ${ticket.ticket_uid}`);
+    lines.push(sep);
+    lines.push(`Betreff: ${ticket.subject}`);
+    lines.push(`Status: ${ticket.status} | Priorität: ${ticket.priority}`);
+    lines.push(`Kategorie: ${ticket.category || '-'}`);
+    lines.push(`Kunde: ${ticket.client?.name || '-'} (${ticket.client?.email || '-'})`);
+    lines.push(`Firma: ${ticket.client?.company || '-'}`);
+    lines.push(`Agent: ${ticket.agent?.name || 'Nicht zugewiesen'}`);
+    lines.push(`Erstellt: ${new Date(ticket.created_at).toLocaleString()}`);
+    lines.push(`Aktualisiert: ${new Date(ticket.updated_at).toLocaleString()}`);
+    lines.push('');
+    lines.push(sep);
+    lines.push('BESCHREIBUNG');
+    lines.push(sep);
+    lines.push(stripHtml(ticket.description));
+    lines.push('');
+
+    replies.forEach((r) => {
+        lines.push(sep);
+        const tag = r.is_internal ? ' [INTERN]' : '';
+        lines.push(`${r.author?.name || 'System'}${tag} — ${new Date(r.created_at).toLocaleString()}`);
+        lines.push(sep);
+        lines.push(stripHtml(r.body));
+        if (r.attachments.length > 0) {
+            lines.push('');
+            lines.push('Anhänge:');
+            r.attachments.forEach((a) => {
+                lines.push(`  • ${a.file_name} (${(a.file_size / 1024).toFixed(1)} KB) → siehe /attachments/${a.file_name}`);
+            });
+        }
+        lines.push('');
+    });
+
+    return lines.join('\n');
+}
 
 export function TicketDetail() {
     const { id } = useParams<{ id: string }>();
@@ -62,6 +109,66 @@ export function TicketDetail() {
         await attachmentsApi.upload(ticket.id, file);
         refetch(true);
     };
+
+    const [exporting, setExporting] = useState(false);
+
+    const handleExport = useCallback(async () => {
+        if (!ticket) return;
+        setExporting(true);
+        try {
+            const zip = new JSZip();
+
+            // Add conversation text
+            const text = buildExportText(ticket, replies);
+            zip.file(`${ticket.ticket_uid}-conversation.txt`, text);
+
+            // Collect all attachments from replies
+            const allAttachments: AttachmentInfo[] = [];
+            replies.forEach((r) => {
+                r.attachments.forEach((a) => allAttachments.push(a));
+            });
+
+            // Fetch and add each attachment
+            const nonce = (window as any).ticketflowAdmin?.nonce || '';
+            const headers: Record<string, string> = {};
+            if (nonce) headers['X-WP-Nonce'] = nonce;
+
+            const usedNames = new Set<string>();
+            for (const att of allAttachments) {
+                try {
+                    const res = await fetch(att.download_url, { credentials: 'same-origin', headers });
+                    if (!res.ok) continue;
+                    const blob = await res.blob();
+                    // Deduplicate filenames
+                    let name = att.file_name;
+                    if (usedNames.has(name)) {
+                        const dot = name.lastIndexOf('.');
+                        const base = dot > 0 ? name.slice(0, dot) : name;
+                        const ext = dot > 0 ? name.slice(dot) : '';
+                        let i = 2;
+                        while (usedNames.has(`${base}-${i}${ext}`)) i++;
+                        name = `${base}-${i}${ext}`;
+                    }
+                    usedNames.add(name);
+                    zip.file(`attachments/${name}`, blob);
+                } catch {
+                    // skip failed downloads
+                }
+            }
+
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            const url = URL.createObjectURL(zipBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${ticket.ticket_uid}-export.zip`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } finally {
+            setExporting(false);
+        }
+    }, [ticket, replies]);
 
     if (loading) {
         return <div className="tf-flex tf-justify-center tf-py-12"><div className="tf-animate-spin tf-rounded-full tf-h-8 tf-w-8 tf-border-b-2 tf-border-primary-600"></div></div>;
@@ -224,6 +331,23 @@ export function TicketDetail() {
                         <h3 className="tf-text-xs tf-font-medium tf-text-gray-500 tf-uppercase tf-mb-3">{t('Activity')}</h3>
                         <ActivityTimeline activity={activity} />
                     </div>
+
+                    {/* Export */}
+                    <button
+                        type="button"
+                        onClick={handleExport}
+                        disabled={exporting}
+                        className="tf-w-full tf-text-sm tf-text-white tf-bg-gray-900 tf-rounded-lg tf-px-4 tf-py-2 hover:tf-bg-gray-800 tf-flex tf-items-center tf-justify-center tf-gap-2 disabled:tf-opacity-50"
+                    >
+                        {exporting ? (
+                            <span className="tf-animate-spin">&#9696;</span>
+                        ) : (
+                            <svg className="tf-w-4 tf-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        )}
+                        {exporting ? t('Exporting...') : t('Export Ticket')}
+                    </button>
                 </div>
             </div>
         </div>

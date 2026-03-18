@@ -125,6 +125,9 @@ const de: Record<string, string> = {
 
     // Settings Page
     'General': 'Allgemein',
+    'Active': 'Aktiv',
+    'Export Ticket': 'Ticket exportieren',
+    'Exporting...': 'Exportiert...',
     'Company': 'Firma',
     'Company Name': 'Firmenname',
     'optional': 'optional',

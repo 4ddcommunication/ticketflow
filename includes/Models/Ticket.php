@@ -80,7 +80,9 @@ class Ticket
         $where  = ['1=1'];
         $values = [];
 
-        if ($args['status']) {
+        if ($args['status'] === 'active') {
+            $where[] = "status NOT IN ('closed', 'resolved')";
+        } elseif ($args['status']) {
             $where[]  = 'status = %s';
             $values[] = $args['status'];
         }
