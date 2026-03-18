@@ -33,7 +33,7 @@ class AttachmentsController extends BaseController
         register_rest_route($this->namespace, '/attachments/(?P<id>\d+)/download', [
             'methods'             => 'GET',
             'callback'            => [$this, 'download'],
-            'permission_callback' => '__return_true',
+            'permission_callback' => [$this, 'check_auth'],
         ]);
 
         register_rest_route($this->namespace, '/attachments/(?P<id>\d+)', [
@@ -72,10 +72,6 @@ class AttachmentsController extends BaseController
 
     public function download(WP_REST_Request $request): void
     {
-        if (!is_user_logged_in()) {
-            wp_die(__('Authentication required.', 'ticketflow'), 401);
-        }
-
         $attachment = Attachment::find((int) $request['id']);
         if (!$attachment) {
             wp_die(__('Attachment not found.', 'ticketflow'), 404);

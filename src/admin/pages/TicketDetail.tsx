@@ -8,6 +8,7 @@ import { PriorityBadge } from '@shared/components/PriorityBadge';
 import { Avatar } from '@shared/components/Avatar';
 import { ReplyComposer } from '../components/ReplyComposer';
 import { ActivityTimeline } from '../components/ActivityTimeline';
+import { AttachmentLink } from '@shared/components/AttachmentLink';
 import { t } from '@shared/i18n';
 
 export function TicketDetail() {
@@ -111,14 +112,11 @@ export function TicketDetail() {
                                 {reply.attachments.length > 0 && (
                                     <div className="tf-mt-2 tf-flex tf-flex-wrap tf-gap-2">
                                         {reply.attachments.map((att) => (
-                                            <a
+                                            <AttachmentLink
                                                 key={att.id}
-                                                href={att.download_url}
-                                                className="tf-flex tf-items-center tf-gap-1 tf-text-xs tf-text-primary-600 tf-bg-primary-50 tf-px-2 tf-py-1 tf-rounded hover:tf-bg-primary-100"
-                                            >
-                                                <svg className="tf-w-3 tf-h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
-                                                {att.file_name}
-                                            </a>
+                                                fileName={att.file_name}
+                                                downloadUrl={att.download_url}
+                                            />
                                         ))}
                                     </div>
                                 )}

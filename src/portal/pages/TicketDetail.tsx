@@ -7,6 +7,7 @@ import { StatusBadge } from '@shared/components/StatusBadge';
 import { PriorityBadge } from '@shared/components/PriorityBadge';
 import { Avatar } from '@shared/components/Avatar';
 import { FileUploader } from '@shared/components/FileUploader';
+import { AttachmentLink } from '@shared/components/AttachmentLink';
 import { ReplyBox } from '../components/ReplyBox';
 import { t } from '@shared/i18n';
 
@@ -83,13 +84,12 @@ export function TicketDetail({ accentColor }: Props) {
                         {reply.attachments.length > 0 && (
                             <div className="tf-mt-2 tf-flex tf-flex-wrap tf-gap-2">
                                 {reply.attachments.map((att) => (
-                                    <a
+                                    <AttachmentLink
                                         key={att.id}
-                                        href={att.download_url}
-                                        className="tf-flex tf-items-center tf-gap-1 tf-text-xs tf-text-primary-600 tf-bg-primary-50 tf-px-2 tf-py-1 tf-rounded hover:tf-bg-primary-100"
-                                    >
-                                        {att.file_name}
-                                    </a>
+                                        fileName={att.file_name}
+                                        downloadUrl={att.download_url}
+                                        showIcon={false}
+                                    />
                                 ))}
                             </div>
                         )}

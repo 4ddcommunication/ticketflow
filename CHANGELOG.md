@@ -2,6 +2,22 @@
 
 All notable changes to Ticketflow are documented in this file.
 
+## [1.0.7] — 2026-03-18
+
+### Added
+- Paste-from-clipboard image support in reply composer (Cmd+V / Ctrl+V)
+- Drag-and-drop file upload onto textarea
+- Inline thumbnail previews inside composer with remove (×) button
+- Image lightbox — click image attachments to preview in overlay instead of broken download URL
+- JS-based file download for all attachments (images via lightbox, non-images via blob download)
+
+### Changed
+- Reply composer layout: textarea with integrated drop zone, file previews between textarea and buttons
+- Attachment download endpoint uses nonce auth (fixes 401 on direct URL access)
+
+### Fixed
+- Attachment download 401 error — fetch with WP nonce header instead of direct URL navigation
+
 ## [1.0.6] — 2026-03-16
 
 ### Added
