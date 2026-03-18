@@ -72,7 +72,7 @@ export function TicketDetail() {
     }
 
     return (
-        <div className="tf-max-w-6xl">
+        <div>
             <button onClick={() => navigate('/tickets')} className="tf-text-sm tf-text-gray-500 hover:tf-text-gray-700 tf-mb-4">
                 &larr; {t('Back to tickets')}
             </button>

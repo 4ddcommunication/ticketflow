@@ -36,7 +36,7 @@ export function App() {
                             </div>
                         </div>
                     </header>
-                    <main className="tf-flex-1 tf-p-6">
+                    <main className="tf-flex-1 tf-p-6" style={{ maxWidth: '1300px' }}>
                         <Routes>
                             <Route path="/" element={<Dashboard />} />
                             <Route path="/tickets" element={<TicketList />} />
