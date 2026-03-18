@@ -126,6 +126,7 @@ const de: Record<string, string> = {
     // Settings Page
     'General': 'Allgemein',
     'Active': 'Aktiv',
+    'Drop files here': 'Dateien hier ablegen',
     'Export Ticket': 'Ticket exportieren',
     'Exporting...': 'Exportiert...',
     'Company': 'Firma',

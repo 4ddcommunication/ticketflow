@@ -2,6 +2,13 @@
 
 All notable changes to Ticketflow are documented in this file.
 
+## [1.1.1] — 2026-03-18
+
+### Added
+- Portal: paste-from-clipboard image support in new ticket form and reply box (Cmd+V / Ctrl+V)
+- Portal: drag-and-drop file upload onto textarea (new ticket + reply)
+- Portal: inline thumbnail previews with remove (×) button for attached files
+
 ## [1.1.0] — 2026-03-18
 
 ### Added

@@ -3,8 +3,8 @@
     "file": "styles/styles.css",
     "src": "_styles-!~{001}~.js"
   },
-  "_styles-Db20-KNI.js": {
-    "file": "styles/chunks/styles-Db20-KNI.js",
+  "_styles-b53HZ0im.js": {
+    "file": "styles/chunks/styles-b53HZ0im.js",
     "name": "styles",
     "css": [
       "styles/styles.css"
@@ -16,7 +16,7 @@
     "src": "src/admin/main.tsx",
     "isEntry": true,
     "imports": [
-      "_styles-Db20-KNI.js"
+      "_styles-b53HZ0im.js"
     ]
   },
   "src/portal/main.tsx": {
@@ -25,7 +25,7 @@
     "src": "src/portal/main.tsx",
     "isEntry": true,
     "imports": [
-      "_styles-Db20-KNI.js"
+      "_styles-b53HZ0im.js"
     ]
   }
 }

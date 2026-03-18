@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ticketsApi, attachmentsApi, settingsApi } from '@shared/api/endpoints';
 import { t } from '@shared/i18n';
@@ -28,12 +28,61 @@ export function NewTicket({ accentColor }: Props) {
     const [submitting, setSubmitting] = useState(false);
     const [uploadProgress, setUploadProgress] = useState('');
     const [error, setError] = useState('');
+    const [dragging, setDragging] = useState(false);
+    const dragCounter = useRef(0);
+
+    const handlePaste = useCallback((e: React.ClipboardEvent) => {
+        const items = e.clipboardData?.items;
+        if (!items) return;
+        for (const item of Array.from(items)) {
+            if (item.type.startsWith('image/')) {
+                e.preventDefault();
+                const file = item.getAsFile();
+                if (!file) continue;
+                const ext = file.type.split('/')[1] === 'jpeg' ? 'jpg' : file.type.split('/')[1];
+                const now = new Date();
+                const name = `screenshot-${now.toISOString().slice(0, 10)}-${now.toTimeString().slice(0, 8).replace(/:/g, '')}.${ext}`;
+                const renamed = new File([file], name, { type: file.type });
+                addFiles([renamed]);
+                break;
+            }
+        }
+    }, []);
+
+    const handleDragEnter = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragCounter.current++;
+        if (e.dataTransfer.types.includes('Files')) setDragging(true);
+    }, []);
+
+    const handleDragLeave = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragCounter.current--;
+        if (dragCounter.current === 0) setDragging(false);
+    }, []);
+
+    const handleDragOver = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+    }, []);
+
+    const handleDrop = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragCounter.current = 0;
+        setDragging(false);
+        if (e.dataTransfer.files?.length) {
+            addFiles(e.dataTransfer.files);
+        }
+    }, []);
 
     useEffect(() => {
         settingsApi.get().then((s) => setCategories(s.categories)).catch(() => {});
     }, []);
 
-    const addFiles = (newFiles: FileList | null) => {
+    const addFiles = (newFiles: FileList | File[] | null) => {
         if (!newFiles) return;
         const valid: File[] = [];
         for (const file of Array.from(newFiles)) {
@@ -142,14 +191,28 @@ export function NewTicket({ accentColor }: Props) {
 
                 <div>
                     <label className="tf-block tf-text-sm tf-font-medium tf-text-gray-700 tf-mb-1">{t('Description')}</label>
-                    <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                        rows={6}
-                        className="tf-w-full tf-px-3 tf-py-2 tf-border tf-border-gray-300 tf-rounded-lg tf-text-sm tf-resize-y focus:tf-ring-2 focus:tf-outline-none"
-                        placeholder={t('Describe your issue in detail...')}
-                    />
+                    <div
+                        onDragEnter={handleDragEnter}
+                        onDragLeave={handleDragLeave}
+                        onDragOver={handleDragOver}
+                        onDrop={handleDrop}
+                        className={`tf-relative tf-rounded-lg tf-border ${dragging ? 'tf-border-primary-400 tf-bg-primary-50' : 'tf-border-gray-300'}`}
+                    >
+                        <textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            onPaste={handlePaste}
+                            required
+                            rows={6}
+                            className="tf-w-full tf-px-3 tf-py-2 tf-border-0 tf-rounded-lg tf-text-sm tf-resize-y focus:tf-ring-2 focus:tf-outline-none tf-bg-transparent"
+                            placeholder={t('Describe your issue in detail...')}
+                        />
+                        {dragging && (
+                            <div className="tf-absolute tf-inset-0 tf-flex tf-items-center tf-justify-center tf-bg-primary-50/80 tf-rounded-lg tf-pointer-events-none">
+                                <span className="tf-text-sm tf-text-primary-600 tf-font-medium">{t('Drop files here')}</span>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* File attachments */}
@@ -176,18 +239,31 @@ export function NewTicket({ accentColor }: Props) {
                     </button>
 
                     {files.length > 0 && (
-                        <ul className="tf-mt-2 tf-space-y-1">
+                        <div className="tf-mt-2 tf-flex tf-flex-wrap tf-gap-2">
                             {files.map((file, i) => (
-                                <li key={i} className="tf-flex tf-items-center tf-justify-between tf-bg-gray-50 tf-rounded tf-px-3 tf-py-1.5 tf-text-sm">
-                                    <span className="tf-text-gray-700 tf-truncate tf-mr-2">{file.name} <span className="tf-text-gray-400">({formatSize(file.size)})</span></span>
-                                    <button type="button" onClick={() => removeFile(i)} className="tf-text-gray-400 hover:tf-text-red-500 tf-flex-shrink-0">
-                                        <svg className="tf-w-4 tf-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
+                                <div key={i} className="tf-relative tf-group">
+                                    {file.type.startsWith('image/') ? (
+                                        <img
+                                            src={URL.createObjectURL(file)}
+                                            alt={file.name}
+                                            className="tf-w-16 tf-h-16 tf-object-cover tf-rounded-lg tf-border tf-border-gray-200"
+                                        />
+                                    ) : (
+                                        <div className="tf-w-16 tf-h-16 tf-rounded-lg tf-border tf-border-gray-200 tf-bg-gray-50 tf-flex tf-items-center tf-justify-center">
+                                            <span className="tf-text-xs tf-text-gray-500 tf-text-center tf-px-1 tf-truncate">{file.name.split('.').pop()?.toUpperCase()}</span>
+                                        </div>
+                                    )}
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFile(i)}
+                                        className="tf-absolute -tf-top-1.5 -tf-right-1.5 tf-w-5 tf-h-5 tf-bg-red-500 tf-text-white tf-rounded-full tf-text-xs tf-flex tf-items-center tf-justify-center tf-opacity-0 group-hover:tf-opacity-100 tf-transition-opacity"
+                                    >
+                                        ×
                                     </button>
-                                </li>
+                                    <p className="tf-text-xs tf-text-gray-500 tf-mt-0.5 tf-w-16 tf-truncate">{file.name}</p>
+                                </div>
                             ))}
-                        </ul>
+                        </div>
                     )}
                 </div>
 
